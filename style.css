@@ -1,0 +1,124 @@
+@charset "utf-8";
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', 'Nanum Gothic', sans-serif;
+    box-sizing: border-box;
+    color: #555;
+    font-size: 16px;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: #555;
+}
+
+section {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+section:last-child {
+    height: 95vh;
+}
+
+#page1 {
+    background: aqua;
+}
+
+#page2 {
+    background: orange;
+}
+
+/* page3 커스텀 모션 */
+#page3 {
+    background: lightgreen; perspective: 600px;
+    display: flex; justify-content: center; align-items: center;
+}
+
+#page3 article {
+    width: 300px; height: 400px; background: #fff; margin: 20px;
+    transform: rotateY(220deg) translateY(100px); opacity: 0;
+    transition: 0.5s;
+}
+#page3.on article {
+    transform: rotateY(0deg) translateY(0px); opacity: 1;
+}
+#page3 article:nth-of-type(1) {transition-delay: 0s;}
+#page3 article:nth-of-type(2) {transition-delay: 0.2s;}
+#page3 article:nth-of-type(3) {transition-delay: 0.4s;}
+
+#page4 {
+    background: hotpink;
+}
+
+header {
+    position: fixed;
+    top: 10%;
+    right: 0px;
+    transform: translateY(-50%);
+    z-index: 1000;
+    background-color: rgba(0,0,0,.3);
+}
+
+nav .menuBtn {
+   display: none;
+}
+
+nav #navi {
+   margin: 5px 0;
+}
+
+#navi li a {
+    display: block;
+    width: 50px;
+    padding: 0 20px;
+    text-align: right;
+    color: #fff;
+    transition: 0.5s;
+}
+
+#navi li a {
+    width: 100%;
+    display: inline-block;
+    position: relative;
+    padding: 0 20px;
+    text-align: right;
+    color: #fff;
+}
+
+#navi li a span {    
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0px;
+    background-color: #fff;
+    border-radius: 100%;
+    margin-right: 5px;
+}
+
+#navi li a.on {
+    color: red;
+}
+
+#navi li a.on span {
+    background-color: red;
+}
+
+#navi li + li {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+footer {
+    width: 100%;
+    height: 5vh;
+}
