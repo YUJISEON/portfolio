@@ -58,6 +58,14 @@ section:last-child {
     background: hotpink;
 }
 
+.clearFix {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+/********************************************/
+
 header {
     position: fixed;
     top: 10%;
@@ -117,6 +125,79 @@ nav #navi {
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+/********************************************/
+
+#page4 {
+    position: relative;
+}
+
+#page4 .imgSildeWrap {
+    width: 800px; height: 70vh;
+    position: absolute; 
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    /*overflow: hidden;*/
+}
+
+#page4 .imgSildeWrap ul.imgContents {
+    width: 400%; height: 100%;
+}
+
+#page4 .imgSildeWrap ul.imgContents li {
+    width: 800px; height: 100%;
+    float: left; display: flex; justify-content: center; align-items: center;
+}
+
+#page4 .imgSildeWrap ul.imgContents li[data-index="1"] {background-color: skyblue;}
+#page4 .imgSildeWrap ul.imgContents li[data-index="2"] {background-color: orange;}
+#page4 .imgSildeWrap ul.imgContents li[data-index="3"] {background-color: aqua;}
+#page4 .imgSildeWrap ul.imgContents li[data-index="4"] {background-color: greenyellow;}
+
+#page4 .imgSildeWrap ul.indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;    
+    width: 100%;
+    text-align: center;
+}
+
+#page4 .imgSildeWrap ul.indicator li {
+    display: inline-block;
+}
+
+#page4 .imgSildeWrap ul.indicator li + li {
+    margin-left: 10px;    
+}
+
+#page4 .imgSildeWrap ul.indicator li a {
+    width: 15px;
+    height: 15px;
+    display: block;
+    border-radius: 20px;
+    background-color: #eee;
+    overflow: hidden;
+    text-indent: -9999px;
+}
+
+#page4 .imgSildeWrap ul.indicator li.on a {
+    animation: checked 1.5s ease;
+    animation-fill-mode: forwards;
+}
+
+#page4 .imgSildeWrap .control a {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 70px;
+}
+#page4 .imgSildeWrap .prev {left: 50px;}
+#page4 .imgSildeWrap .next {right: 50px;}
+
+
+
+/********************************************/
+
 
 footer {
     width: 100%;
