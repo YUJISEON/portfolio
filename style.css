@@ -180,9 +180,10 @@ nav #navi {
     text-indent: -9999px;
 }
 
-#page4 .imgSildeWrap ul.indicator li.on a {
-    animation: checked 1.5s ease;
-    animation-fill-mode: forwards;
+#page4 .imgSildeWrap ul.indicator li a.on {
+    /*animation: checked 1.5s ease;
+    animation-fill-mode: forwards;*/
+    background-color: red;
 }
 
 #page4 .imgSildeWrap .control a {

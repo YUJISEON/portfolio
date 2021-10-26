@@ -12,11 +12,19 @@
     <script defer src="main.js"></script>   
     <script>
         $(document).ready(function(){
-            /*new PageScroll({
+            new PageScroll({
                 panel : "section",
                 btns : "#navi li",
                 base : 0
-            });*/
+            });
+             
+            new ImageSlide({
+                wrap : ".imgSildeWrap",
+                panel : "ul.imgContents",
+                indicator : "ul.indicator",
+                arrow : "p.control",
+                speed : 500
+            })      
         })
     </script> 
 </head>
