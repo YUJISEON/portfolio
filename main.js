@@ -2,13 +2,13 @@
 'use strict';
 
 function PageScroll(option) {
-    console.log("PageScroll");
+    // console.log("PageScroll");
     this.init(option);
     this.bindingEvent();
 }
 
 PageScroll.prototype.init = function(option) {
-    console.log("PageScroll - init");
+    // console.log("PageScroll - init");
     this.page = $(option.panel);
     this.btns = $(option.btns);
     this.posArr;
@@ -21,7 +21,7 @@ PageScroll.prototype.init = function(option) {
 }
 
 PageScroll.prototype.bindingEvent = function(option) {
-    console.log("PageScroll - bindingEvent");
+    // console.log("PageScroll - bindingEvent");
     this.setPos();
 
     this.eventScroll = ('onmousewheel' in window) ? 'mousewheel' : 'DOMMouseScroll';
@@ -68,23 +68,23 @@ PageScroll.prototype.bindingEvent = function(option) {
 }
 
 PageScroll.prototype.setPos = function(){
-    console.log("setPos");
+    // console.log("setPos");
     this.posArr=[];
     this.page.each(function(index){
         this.posArr.push(this.page.eq(index).offset().top);
     }.bind(this));
-    console.log(this.posArr);
+    // console.log(this.posArr);
 }
 
 PageScroll.prototype.moveScroll = function(index){
-    console.log("moveScroll");
+    // console.log("moveScroll");
     $("html,body").stop().animate({scrollTop: this.posArr[index]}, this.speed, function(){
         this.enableEvt = true;
     }.bind(this)); 
 }
 
 PageScroll.prototype.activation = function(scroll){
-    console.log("activation");
+    // console.log("activation");
     this.page.each(function(index){
         var minScroll= this.posArr[index] - $(window).height()/2;
         var maxScroll= this.posArr[index] + $(window).height()/2;
@@ -128,21 +128,22 @@ ImageSlide.prototype.bindingEvent = function(option) {
     this.setSildeWrap();
     this.setSlide(this.slideFirst);
 
-    $("body").on('click', "ul.indicator li a", function(e) {
+    $("body").on('click', "ul.indicator > li > a", function(e) {
         e.preventDefault();
-        var index = $(this).attr("data-index");
-        this.showSlide(index);
-    });
+        //var index = $(this).attr("data-index");
+        var index = $(e.currentTarget).attr("data-index");
+        this.setSlide(index);
+    }.bind(this));
 
     this.$next.on("click",function(e){
         e.preventDefault();
         this.slideShowNext(null);
-    });
+    }.bind(this));
     
     this.$prev.on("click",function(e){
         e.preventDefault();
         this.slideShowPrev(null);
-    });
+    }.bind(this));
     
 }
 
@@ -166,13 +167,14 @@ ImageSlide.prototype.setSildeWrap = function () {
 }
 
 ImageSlide.prototype.setSlide = function(_index) {
-    console.log("setSlide");
     if (this.slideNow === 0) {
         this.$panel.css({'transition': 'none', 'left': -((_index) * 100) + '%'});
         this.setSlideStatus(_index);
     } else {
         this.indicatorCount = _index - this.slideNow ;
-        if(this.indicatorCount > 0) {
+        console.log("indicatorCount >>>> " + this.indicatorCount)
+        //if(this.indicatorCount > 0 && this.indicatorCount < 3) {
+        if(this.indicatorCount > 0)    
             this.slideShowNext(this.indicatorCount)
         } else {
             this.slideShowPrev(this.indicatorCount);
@@ -199,18 +201,23 @@ ImageSlide.prototype.setSlideStatus = function(_index) {
 ImageSlide.prototype.slideShowNext = function (_indicatorCount) {
     console.log("slideShowNext");
     if(_indicatorCount !== null) {
+        console.log("slideShowNext >>>> 1");
         this.$panel.stop().animate({marginLeft: -((_indicatorCount+1) * 100) + '%'}, this.speed, function(){            
+            console.log("slideShowNext >>>> 2");
             for(let i=0;i<_indicatorCount;i++) {
-                $(this).find("li").first().appendTo(this);
+                console.log("slideShowNext >>>> 3");
+                this.$panel.find("li").first().appendTo(this.$panel);
                 this.setSlideStatus(this.slideNext);
-                $(this).css({marginLeft: "-100%"});
+                this.$panel.css({marginLeft: "-100%"});
             }               
         }.bind(this));
     } else {
+        console.log("slideShowNext >>>> 4");
         this.$panel.stop().animate({marginLeft: "-200%"}, this.speed, function(){
-            $(this).find("li").first().appendTo(this);
+            console.log("slideShowNext >>>> 5");
+            this.$panel.find("li").first().appendTo(this.$panel);
             this.setSlideStatus(this.slideNext);
-            $(this).css({marginLeft: "-100%"});
+            this.$panel.css({marginLeft: "-100%"});
         }.bind(this));
     }
 }
@@ -218,18 +225,23 @@ ImageSlide.prototype.slideShowNext = function (_indicatorCount) {
 ImageSlide.prototype.slideShowPrev = function (_indicatorCount) {
     console.log("slideShowPrev");
     if(_indicatorCount !== null) {
+        console.log("slideShowPrev >>>> 1");
         this.$panel.stop().animate({marginLeft: 0 + '%'}, this.speed, function(){     
+            console.log("slideShowPrev >>>> 2");
             for(let i=0;i<-(_indicatorCount);i++) {
-                $(this).find("li").last().prependTo(this);
+                console.log("slideShowPrev >>>> 3");
+                this.$panel.find("li").last().prependTo(this.$panel);
                 this.setSlideStatus(this.slidePrev);
-                $(this).css({marginLeft: "-100%"});
+                this.$panel.css({marginLeft: "-100%"});
             }               
         }.bind(this));
     } else {
+        console.log("slideShowPrev >>>> 4");
         this.$panel.stop().animate({marginLeft: "0%"}, this.speed, function(){
-            $(this).find("li").last().prependTo( this );
+            console.log("slideShowPrev >>>> 5");
+            this.$panel.find("li").last().prependTo(this.$panel);
             this.setSlideStatus(this.slidePrev);
-            $(this).css({marginLeft: "-100%"});
+            this.$panel.css({marginLeft: "-100%"});
         }.bind(this));
     }
 }
