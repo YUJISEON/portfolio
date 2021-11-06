@@ -123,6 +123,7 @@ ImageSlide.prototype.init = function(option) {
     this.isFirst = true;
     this.speed = option.speed;
     this.indicatorCount = 0;
+    this.enableActive = true;
 }
 
 ImageSlide.prototype.bindingEvent = function(option) {
@@ -130,22 +131,37 @@ ImageSlide.prototype.bindingEvent = function(option) {
     this.setSildeWrap();
     this.setSlide(this.slideFirst);
 
-    $("body").on('click', "ul.indicator > li > a", function(e) {
+    $("body").on('click', "ul.indicator > li > a", (e) => {
         e.preventDefault();
         //var index = $(this).attr("data-index");
-        var index = $(e.currentTarget).attr("data-index");
-        this.setSlide(index);
-    }.bind(this));
 
-    this.$next.on("click",function(e){
+        var isOn = $(e.currentTarget).hasClass("on");
+        if(isOn) return;
+
+        var index = $(e.currentTarget).attr("data-index");
+        if(this.enableActive) {
+            this.enableActive = false;
+            this.setSlide(index);
+        }
+        
+    });
+
+    this.$next.on("click", (e) => {
         e.preventDefault();
-        this.slideShowNext(null);
-    }.bind(this));
+
+        if(this.enableActive) {
+            this.enableActive = false;
+            this.slideShowNext(null);
+        }
+    });
     
-    this.$prev.on("click",function(e){
+    this.$prev.on("click", (e) => {
         e.preventDefault();
-        this.slideShowPrev(null);
-    }.bind(this));
+        if(this.enableActive) {
+            this.enableActive = false;
+            this.slideShowPrev(null);
+        }
+    });
     
 }
 
@@ -162,10 +178,10 @@ ImageSlide.prototype.setSildeWrap = function () {
     })
     this.$panel.find("li").last().prependTo(this.$panel);
 
-    this.$panel.find('li').each(function(i) {
+    this.$panel.find('li').each((i) => {
         $(this).css({'left': (i * 100) + '%'}); /* , 'display': 'block' */
         this.$indicator.append('<li><a href="#" data-index=' + (i+1) +'>' + (i + 1) + '</a></li>\n');   
-    }.bind(this));
+    });
 }
 
 ImageSlide.prototype.setSlide = function(_index) {
@@ -174,8 +190,6 @@ ImageSlide.prototype.setSlide = function(_index) {
         this.setSlideStatus(_index);
     } else {
         this.indicatorCount = _index - this.slideNow ;
-        //console.log("indicatorCount >>>> " + this.indicatorCount)
-        //if(this.indicatorCount > 0 && this.indicatorCount < 3) {
         if(this.indicatorCount > 0 ) {
             this.slideShowNext(this.indicatorCount)
         } else {
@@ -209,24 +223,21 @@ ImageSlide.prototype.slideShowNext = function (_indicatorCount) {
     if(_indicatorCount === null) { leftValue  = 1; }
     else { leftValue = _indicatorCount }
 
-    setTimeout(function(){
-            console.log("callbacksetTimeout >>>> 1");
+    setTimeout(() => {
             this.$panel.find("li").first().appendTo(this.$panel);
             this.$panel.css({marginLeft: "0%"});
-            setTimeout(function(){                
-                    console.log("callback!!!!!!!!!!!!! >>>> 1");
-                    this.$panel.stop().animate({marginLeft: -((leftValue) * 100) + '%'}, this.speed, function() {
+            setTimeout(() => {                
+                    this.$panel.stop().animate({marginLeft: -((leftValue) * 100) + '%'}, this.speed, () =>  {
                           for(let i=2;i<=leftValue;i++) {
                               this.$panel.find("li").first().appendTo(this.$panel);   
                               this.$panel.css({marginLeft: -((i) * 100) + '%'});
-                              console.log("for 반복문.. " + i)
                           }                            
                           this.setSlideStatus(this.slideNow+leftValue); ///////                     
                           this.$panel.css({marginLeft: "-100%"});
                           this.enableActive = true;                  
-                    }.bind(this));              
-            }.bind(this))
-    }.bind(this));
+                    });              
+            })
+    });
 }
 
 ImageSlide.prototype.slideShowPrev = function (_indicatorCount) {
@@ -236,27 +247,21 @@ ImageSlide.prototype.slideShowPrev = function (_indicatorCount) {
     if(_indicatorCount === null) { rightValue = 1; }
     else { rightValue = _indicatorCount; console.log(rightValue); }
 
-    setTimeout(function(){
-            console.log("callbacksetTimeout >>>> 1");
+    setTimeout(() => {
             for(let i=2;i<=rightValue;i++) {
                 //$panel.find("li").first().appendTo($panel);   
                 this.$panel.find("li").last().prependTo(this.$panel);
                 this.$panel.css({marginLeft: -((i) * 100) + '%'});
-                console.log("for 반복문.. " + i)
             }
-            setTimeout(function(){      
-                console.log("callback!!!!!!!!!!!!! >>>> 1");
-                this.$panel.stop().animate({marginLeft: -((0) * 100) + '%'}, this.speed, function() {
+            setTimeout(() => {      
+                this.$panel.stop().animate({marginLeft: -((0) * 100) + '%'}, this.speed, () => {
                      this.$panel.find("li").last().prependTo(this.$panel); 
                       this.$panel.css({marginLeft: "-100%"});
-                      console.log(this.slideNow);
-                      console.log(rightValue);
-                      console.log("setSlideStatus Value : " + this.slideNow-rightValue);
                       this.setSlideStatus(this.slideNow-rightValue);  
                       this.enableActive = true;  
-                }.bind(this));
-            }.bind(this));
-    }.bind(this));      
+                });
+            });
+    });      
 }
 
 /*
