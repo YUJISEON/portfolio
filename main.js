@@ -176,7 +176,7 @@ ImageSlide.prototype.setSlide = function(_index) {
         this.indicatorCount = _index - this.slideNow ;
         //console.log("indicatorCount >>>> " + this.indicatorCount)
         //if(this.indicatorCount > 0 && this.indicatorCount < 3) {
-        if(this.indicatorCount > 0 && Math.abs(this.indicatorCount) < 3 ) {
+        if(this.indicatorCount > 0 ) {
             this.slideShowNext(this.indicatorCount)
         } else {
             this.slideShowPrev(Math.abs(this.indicatorCoun));
