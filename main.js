@@ -179,7 +179,7 @@ ImageSlide.prototype.setSlide = function(_index) {
         if(this.indicatorCount > 0 ) {
             this.slideShowNext(this.indicatorCount)
         } else {
-            this.slideShowPrev(Math.abs(this.indicatorCoun));
+            this.slideShowPrev(Math.abs(this.indicatorCount));
         }        
     }
 }
