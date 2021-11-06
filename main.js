@@ -112,6 +112,7 @@ ImageSlide.prototype.init = function(option) {
     this.$panel = $(option.panel);
     this.$indicator = $(option.indicator);
     this.$indicatorBtn =  this.$indicator.find("li");
+    this.slideList = this.$panel.find("li");
     this.slideTotal = this.$panel.find("li").length;
     this.$prev = $(".prev");
     this.$next = $(".next");
@@ -119,6 +120,7 @@ ImageSlide.prototype.init = function(option) {
     this.slideNext = 0;
     this.slideNow = 0;
     this.slideFirst = 1;
+    this.isFirst = true;
     this.speed = option.speed;
     this.indicatorCount = 0;
 }
@@ -172,19 +174,21 @@ ImageSlide.prototype.setSlide = function(_index) {
         this.setSlideStatus(_index);
     } else {
         this.indicatorCount = _index - this.slideNow ;
-        console.log("indicatorCount >>>> " + this.indicatorCount)
+        //console.log("indicatorCount >>>> " + this.indicatorCount)
         //if(this.indicatorCount > 0 && this.indicatorCount < 3) {
-        if(this.indicatorCount > 0)    
+        if(this.indicatorCount > 0 && Math.abs(this.indicatorCount) < 3 ) {
             this.slideShowNext(this.indicatorCount)
         } else {
-            this.slideShowPrev(this.indicatorCount);
+            this.slideShowPrev(Math.abs(this.indicatorCoun));
         }        
     }
 }
 
 ImageSlide.prototype.setSlideStatus = function(_index) {
     console.log("setSlideStatus");
-    this.slideNow = _index;
+    
+    this.slideNow = _index = _index > this.slideTotal ? 1 : _index ;
+    this.slideNow = _index = _index < 1 ? this.slideTotal : _index ;
     this.slidePrev = (_index - 1) < 1 ? this.slideTotal : _index - 1;
     this.slideNext = (_index + 1) > this.slideTotal ? 1 : _index + 1;
 
@@ -200,50 +204,59 @@ ImageSlide.prototype.setSlideStatus = function(_index) {
 
 ImageSlide.prototype.slideShowNext = function (_indicatorCount) {
     console.log("slideShowNext");
-    if(_indicatorCount !== null) {
-        console.log("slideShowNext >>>> 1");
-        this.$panel.stop().animate({marginLeft: -((_indicatorCount+1) * 100) + '%'}, this.speed, function(){            
-            console.log("slideShowNext >>>> 2");
-            for(let i=0;i<_indicatorCount;i++) {
-                console.log("slideShowNext >>>> 3");
-                this.$panel.find("li").first().appendTo(this.$panel);
-                this.setSlideStatus(this.slideNext);
-                this.$panel.css({marginLeft: "-100%"});
-            }               
-        }.bind(this));
-    } else {
-        console.log("slideShowNext >>>> 4");
-        this.$panel.stop().animate({marginLeft: "-200%"}, this.speed, function(){
-            console.log("slideShowNext >>>> 5");
+
+    var leftValue;
+    if(_indicatorCount === null) { leftValue  = 1; }
+    else { leftValue = _indicatorCount }
+
+    setTimeout(function(){
+            console.log("callbacksetTimeout >>>> 1");
             this.$panel.find("li").first().appendTo(this.$panel);
-            this.setSlideStatus(this.slideNext);
-            this.$panel.css({marginLeft: "-100%"});
-        }.bind(this));
-    }
+            this.$panel.css({marginLeft: "0%"});
+            setTimeout(function(){                
+                    console.log("callback!!!!!!!!!!!!! >>>> 1");
+                    this.$panel.stop().animate({marginLeft: -((leftValue) * 100) + '%'}, this.speed, function() {
+                          for(let i=2;i<=leftValue;i++) {
+                              this.$panel.find("li").first().appendTo(this.$panel);   
+                              this.$panel.css({marginLeft: -((i) * 100) + '%'});
+                              console.log("for 반복문.. " + i)
+                          }                            
+                          this.setSlideStatus(this.slideNow+leftValue); ///////                     
+                          this.$panel.css({marginLeft: "-100%"});
+                          this.enableActive = true;                  
+                    }.bind(this));              
+            }.bind(this))
+    }.bind(this));
 }
 
 ImageSlide.prototype.slideShowPrev = function (_indicatorCount) {
     console.log("slideShowPrev");
-    if(_indicatorCount !== null) {
-        console.log("slideShowPrev >>>> 1");
-        this.$panel.stop().animate({marginLeft: 0 + '%'}, this.speed, function(){     
-            console.log("slideShowPrev >>>> 2");
-            for(let i=0;i<-(_indicatorCount);i++) {
-                console.log("slideShowPrev >>>> 3");
+    
+    var rightValue;
+    if(_indicatorCount === null) { rightValue = 1; }
+    else { rightValue = _indicatorCount; console.log(rightValue); }
+
+    setTimeout(function(){
+            console.log("callbacksetTimeout >>>> 1");
+            for(let i=2;i<=rightValue;i++) {
+                //$panel.find("li").first().appendTo($panel);   
                 this.$panel.find("li").last().prependTo(this.$panel);
-                this.setSlideStatus(this.slidePrev);
-                this.$panel.css({marginLeft: "-100%"});
-            }               
-        }.bind(this));
-    } else {
-        console.log("slideShowPrev >>>> 4");
-        this.$panel.stop().animate({marginLeft: "0%"}, this.speed, function(){
-            console.log("slideShowPrev >>>> 5");
-            this.$panel.find("li").last().prependTo(this.$panel);
-            this.setSlideStatus(this.slidePrev);
-            this.$panel.css({marginLeft: "-100%"});
-        }.bind(this));
-    }
+                this.$panel.css({marginLeft: -((i) * 100) + '%'});
+                console.log("for 반복문.. " + i)
+            }
+            setTimeout(function(){      
+                console.log("callback!!!!!!!!!!!!! >>>> 1");
+                this.$panel.stop().animate({marginLeft: -((0) * 100) + '%'}, this.speed, function() {
+                     this.$panel.find("li").last().prependTo(this.$panel); 
+                      this.$panel.css({marginLeft: "-100%"});
+                      console.log(this.slideNow);
+                      console.log(rightValue);
+                      console.log("setSlideStatus Value : " + this.slideNow-rightValue);
+                      this.setSlideStatus(this.slideNow-rightValue);  
+                      this.enableActive = true;  
+                }.bind(this));
+            }.bind(this));
+    }.bind(this));      
 }
 
 /*
