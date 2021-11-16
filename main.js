@@ -26,13 +26,13 @@ PageScroll.prototype.bindingEvent = function(option) {
 
     this.eventScroll = ('onmousewheel' in window) ? 'mousewheel' : 'DOMMouseScroll';
 
-    $(window).on("resize",function(){
+    $(window).on("resize", ()=>{
         this.setPos();
         var activeIndex = this.page.children("a").filter(".on").parent().index();
         this.moveScroll(activeIndex); 
-    }.bind(this));
+    });
 
-    this.btns.on("click",function(e){
+    this.btns.on("click", (e)=>{
         e.preventDefault();
         
         var isOn = $(e.currentTarget).children("a").hasClass("on");
@@ -43,14 +43,14 @@ PageScroll.prototype.bindingEvent = function(option) {
             var i = $(e.currentTarget).index();
             this.moveScroll(i);
         }   
-    }.bind(this));
+    });
 
-    $(window).on("scroll",function(){
+    $(window).on("scroll",()=>{
         var scroll = $(window).scrollTop();
         this.activation(scroll);   
-    }.bind(this));
+    });
 
-    this.page.on("mousewheel", function(e){
+    this.page.on("mousewheel", (e)=>{
       e.preventDefault();
 
       if(this.enableEvt){
@@ -63,29 +63,29 @@ PageScroll.prototype.bindingEvent = function(option) {
             this.moveScroll(i-1);
         }
       }   
-   }.bind(this));
+   });
 
 }
 
 PageScroll.prototype.setPos = function(){
     // console.log("setPos");
     this.posArr=[];
-    this.page.each(function(index){
+    this.page.each((index)=>{
         this.posArr.push(this.page.eq(index).offset().top);
-    }.bind(this));
+    });
     // console.log(this.posArr);
 }
 
 PageScroll.prototype.moveScroll = function(index){
     // console.log("moveScroll");
-    $("html,body").stop().animate({scrollTop: this.posArr[index]}, this.speed, function(){
+    $("html,body").stop().animate({scrollTop: this.posArr[index]}, this.speed, ()=>{
         this.enableEvt = true;
-    }.bind(this)); 
+    }); 
 }
 
 PageScroll.prototype.activation = function(scroll){
     // console.log("activation");
-    this.page.each(function(index){
+    this.page.each((index)=>{
         var minScroll= this.posArr[index] - $(window).height()/2;
         var maxScroll= this.posArr[index] + $(window).height()/2;
         //if(scroll>= this.posArr[index]+this.base){
@@ -96,7 +96,7 @@ PageScroll.prototype.activation = function(scroll){
           this.page.removeClass("on");
           this.page.eq(index).addClass("on");
         }
-    }.bind(this)); 
+    }); 
 }
 
 
