@@ -99,6 +99,91 @@ PageScroll.prototype.activation = function(scroll){
     }); 
 }
 
+///////////////////////////////////////////////
+
+
+var $page1_top = $('#page1').offset().top;
+var $page2_top = $('#page2').offset().top;
+var $page3_top = $('#page3').offset().top;
+var $page2_Ht =  $('#page2').height();
+var $page2_img = $(".page2__img");
+var onAnimation = true;
+
+var _scale = 2;
+var minScale = 1;
+var maxScale = 2;
+var baseS = 0.1;
+
+var yyy=0;
+var xxx=0;
+var tansY = -100;
+var minTansY = -$page2_Ht/2;
+var maxTansY = -100;
+var baseY = 50;
+
+var tansX = -200;
+var minTansX = 100;
+var maxTansX = -200;
+console.log($page2_top);
+console.log($page2_Ht);
+
+var eventScroll = ('onmousewheel' in window) ? 'mousewheel' : 'DOMMouseScroll';
+
+$(window).on(eventScroll, function(e) {
+    console.log("wheel!!!!!!!!!!!")
+    const pageY = $(window).scrollTop();    
+    console.log("pageY " + pageY);
+    console.log('eventScroll : ' + eventScroll);
+    onAnimation = false;
+   var delta = 0;
+    if (eventScroll === 'mousewheel') { 
+          console.log("e.wheelDelta : " +e.originalEvent.wheelDelta);
+          delta = e.originalEvent.wheelDelta / -150;
+    } else {
+          console.log("e.detail : " + e.originalEvent.detail);
+          //delta = e.detail / 3;
+   }
+   console.log("delta >> " + delta);
+    if (delta > 0) {
+         console.log("wheel down");  
+          //tansY -= baseY;
+          _scale >= minScale ? _scale -= baseS : _scale = minScale ;
+          tansX >= minTansX ? tansX -= baseY : tansX = minTansX ;
+          tansY >= minTansY ? tansY -= baseY : tansY = minTansY ;
+          console.log(tansY);   
+          yyy = yyy + 100;
+          xxx = xxx + 10;
+    } else {
+         console.log("wheel up");   
+          //tansY += baseY;
+          _scale <= maxScale ? _scale += baseS : _scale = maxScale;
+          tansX <= maxTansX ? tansX += baseY : tansX = maxTansX ;
+          tansY <= maxTansY ? tansY += baseY : tansY = maxTansY ;
+          console.log(tansY); 
+          yyy = yyy - 100;
+          xxx = xxx - 10;
+    }
+    
+    if(pageY > 300) {
+        $page2_img.animate({
+          bottom : `${yyy}px`
+        }, 0, function() {
+            onAnimation = true;
+        })
+    } else if(pageY > 500) {
+        $page2_img.animate({
+          
+          left : `${xxx}px`
+        }, 0, function() {
+            onAnimation = true;
+        })
+    }
+  
+})
+
+
+
+///////////////////////////////////////////////
 
 function ImageSlide(option) {
     console.log("imageSlide");
@@ -264,123 +349,3 @@ ImageSlide.prototype.slideShowPrev = function (_indicatorCount) {
     });      
 }
 
-/*
-var $imgSildeWrap = $(".imgSildeWrap");
-var $panel = $imgSildeWrap.find("ul.imgContents");
-var $indicator =  $imgSildeWrap.find("ul.indicator li a");
-var numSlide = $panel.find("li").length;
-var $prev = $(".prev");
-var $next = $(".next");
-var slidePrev = 0;
-var slideNext = 0;
-var slideNow = 0;
-var slideFirst = 1;
-var speed = 500;
-var indicatorCount = 0;
-
-init($panel);
-showSlide(slideFirst);
-
-$("body").on('click', "ul.indicator li a", function(e) {
-    e.preventDefault();
-    var index = $(this).attr("data-index");
-    showSlide(index);
-});
-
-$next.on("click",function(e){
-    e.preventDefault();
-    next(null);
-});
-
-$prev.on("click",function(e){
-    e.preventDefault();
-    prev(null);
-});
-
-
-function init(_panel){
-    var len = _panel.find("li").length;
-    _panel.css({
-        width : 100*len + "%",
-        marginLeft : "-100%",
-        height : "100%"
-    })
-    _panel.find("li").css({
-        width : 100/len + "%",
-        height : "100%"
-    })
-    _panel.find("li").last().prependTo(_panel);
-
-    $imgSildeWrap.find('ul.imgContents li').each(function(i) {
-        $(this).css({'left': (i * 100) + '%'}); 
-        $imgSildeWrap.find('ul.indicator').append('<li><a href="#" data-index=' + (i+1) +'>' + (i + 1) + '</a></li>\n');   
-    });
-}
-
-function next(_indicatorCount){
-    if(_indicatorCount !== null) {
-        $panel.stop().animate({marginLeft: -((_indicatorCount+1) * 100) + '%'},speed,function(){            
-            for(let i=0;i<_indicatorCount;i++) {
-                $(this).find("li").first().appendTo(this);
-                slideStatus(slideNext);
-                $(this).css({marginLeft: "-100%"});
-            }               
-        });
-    } else {
-        $panel.stop().animate({marginLeft: "-200%"},speed,function(){
-            $(this).find("li").first().appendTo(this);
-            slideStatus(slideNext);
-            $(this).css({marginLeft: "-100%"});
-        });
-    }
-
-}
-
-function prev(_indicatorCount){
-   if(_indicatorCount !== null) {
-        $panel.stop().animate({marginLeft: 0 + '%'},speed,function(){     
-            for(let j=0;j<-(_indicatorCount);j++) {
-                $(this).find("li").last().prependTo(this);
-                slideStatus(slidePrev);
-                $(this).css({marginLeft: "-100%"});
-            }               
-        });
-    } else {
-        $panel.stop().animate({marginLeft: "0%"},speed,function(){
-            $(this).find("li").last().prependTo( this );
-            slideStatus(slidePrev);
-            $(this).css({marginLeft: "-100%"});
-        });
-    }
-    
-}
-
-function showSlide(_index) {    
-    if (slideNow === 0) {
-        $panel.css({'transition': 'none', 'left': -((_index) * 100) + '%'});
-        slideStatus(_index);
-    } else {
-        indicatorCount = _index - slideNow ;
-        if(indicatorCount > 0) {
-            next(indicatorCount)
-        } else {
-            prev(indicatorCount);
-        }        
-    } 
-}
-
-function slideStatus(_index) {    
-    slideNow = _index;
-    slidePrev = (_index - 1) < 1 ? numSlide : _index - 1;
-    slideNext = (_index + 1) > numSlide ? 1 : _index + 1;
-
-    $imgSildeWrap.find("ul.indicator li").children("a").removeClass("on");
-    $imgSildeWrap.find("ul.indicator li").eq(_index - 1).children("a").addClass("on");
-    
-    console.clear();
-    console.log(`_index : ${_index}`);
-    console.log(`slideNow : ${slideNow}`);
-    console.log(`slidePrev : ${slidePrev}`);
-    console.log(`slideNext : ${slideNext}`);
-}
-*/

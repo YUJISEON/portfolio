@@ -12,7 +12,6 @@
     font-family: 'Source Sans Pro', 'Nanum Gothic', sans-serif;
     box-sizing: border-box;    
     font-size: 16px; 
-    color: var(--text-color);
 }
 
 ul, ol {
@@ -42,10 +41,12 @@ section > h2 {
 
 #page1 {
     background: url(img/page1_me.jpg) no-repeat center/cover;
+    color: var(--text-color);
 }
 
 #page2 {
-    background: rgba(0,0,0,1.0);
+    /*background: rgba(0,0,0,1.0);*/
+    color: #000;
 }
 
 #page3 {
@@ -181,6 +182,67 @@ nav #navi {
 
 /********************************************/
 
+#page2 .page2__contents .page2__img {
+    width: 60vw; 
+    /*   transform: matrix(2, 0, 0, 2, -200, -100);   */
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: scale(2);
+    transform: translateX(-50%);
+    border: 1px solid red;
+    transition: .5s;
+}
+
+#page2 .page2__contents .page2__img img {
+    width: 100%;
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+}
+
+#page2 .page2__contents .page2__introduce {
+    position: relative;
+    border: 1px solid blue;
+}
+
+#page2 .page2__contents .page2__introduce .introduce__title {
+    width: 1000px;
+    /* height: 500px; */
+    position: absolute;
+    top: 50px; left: 100px;
+    z-index: 3;
+    transition: 1s;
+    opacity: 0; 
+}
+
+#page2 .page2__contents .page2__introduce .introduce__title.active {
+    z-index: 5;
+    opacity: 1;
+}
+
+#page2 .page2__contents .page2__introduce .introduce__title p {
+    font-size: 60px;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.002em;
+    font-family: SF Pro Display,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+#page2 .page2__contents .page2__introduce .introduce__desc {
+    margin: 100px 0;
+    opacity: 0;
+}
+
+#page2 .page2__contents .page2__introduce .introduce__desc p {
+    color: #1d1d1f;
+    font-size: 22px;
+    line-height: 1.2;
+    font-weight: 200;
+    letter-spacing: .009em;
+    font-family: SF Pro Display,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+/*
 #page2 .page2__contents {
     display: flex; justify-content: space-between; align-items: center;
 }
@@ -195,8 +257,7 @@ nav #navi {
 }
 
 #page2 .page2__contents .page2__img img::after {
-    content: '';
-    
+    content: '';    
     width: 500px;
     height: 500px;
     background-color: gray;
@@ -209,7 +270,7 @@ nav #navi {
     /* position: absolute;
     top: 30%;
     left: 50%;
-    transform: translate(-50%, -30%); */
+    transform: translate(-50%, -30%); 
     
 }
 
@@ -218,6 +279,7 @@ nav #navi {
     line-height: 3vw;
 }
 
+/*
 #page2 .page2__contents .page2__introduce p:nth-of-type(5) {
     margin-top: 60px;
     text-align: center;
@@ -257,11 +319,18 @@ nav #navi {
 	90%		{text-shadow:  0 0 0px #111;}
 	100%		{opacity: 1; }
 	/*95%		{text-shadow:  0 0 90px #111;}
-	100%	{text-shadow:  0 0 100px #111; opacity:0;}*/
+	100%	{text-shadow:  0 0 100px #111; opacity:0;}
+}
+*/
+
+#page2 .page2__contents .page2__introduce .page2__button {
+    position: absolute;
+    bottom: 0; left: 0;
+    opacity: 0;
 }
 
-
 #page2 .page2__contents .page2__introduce .page2__button a {
+
     display: inline-block;
     width: 150px;
     height: 50px;
@@ -271,7 +340,6 @@ nav #navi {
     line-height: 50px;
     font-weight: 500;
     border-radius: 10px;
-    margin: 30px 20px;
     transition: all .3s;
 }
 
