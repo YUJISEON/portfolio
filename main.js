@@ -23,12 +23,6 @@ PageScroll.prototype.init = (option) => {
     this.num=0;
     this.startTime=0;
     this.currentValue=0;
-    //this.timerId = '';
-    //this.base = option.base;
-    //this.onWheelRepeat = false;
-    //this.onAnimation = false
-    //this.isWheelBlocked = false;
-    //console.log(`init this : ${this}`);
 }
 
 PageScroll.prototype.bindingEvent = () => {
@@ -156,108 +150,7 @@ PageScroll.prototype.setPage = ()=>{
         }
     }); 
 }
-
    
-
-/*
-function PageScroll(option) {
-    // console.log("PageScroll");
-    this.init(option);
-    this.bindingEvent();
-}
-
-PageScroll.prototype.init = function(option) {
-    // console.log("PageScroll - init");
-    this.page = $(option.panel);
-    this.btns = $(option.btns);
-    this.posArr;
-    this.speed = 500;
-    this.enableEvt = true;
-    this.eventScroll;
-    this.base = option.base;
-    this.onWheelRepeat = false;
-    this.isWheelBlocked = false;
-}
-
-PageScroll.prototype.bindingEvent = function(option) {
-    // console.log("PageScroll - bindingEvent");
-    this.setPos();
-
-    this.eventScroll = ('onmousewheel' in window) ? 'mousewheel' : 'DOMMouseScroll';
-
-    $(window).on("resize", ()=>{
-        this.setPos();
-        var activeIndex = this.page.children("a").filter(".on").parent().index();
-        this.moveScroll(activeIndex); 
-    });
-
-    this.btns.on("click", (e)=>{
-        e.preventDefault();
-        
-        var isOn = $(e.currentTarget).children("a").hasClass("on");
-        if(isOn) return;
-
-        if(this.enableEvt){
-            this.enableEvt = false;
-            var i = $(e.currentTarget).index();
-            this.moveScroll(i);
-        }   
-    });
-
-    $(window).on("scroll",()=>{
-        var scroll = $(window).scrollTop();
-        this.activation(scroll);   
-    });
-
-    this.page.on("mousewheel", (e)=>{
-      e.preventDefault();
-
-      if(this.enableEvt){
-        this.enableEvt = false;
-        var i = $(e.currentTarget).index();  
-  
-        if(e.originalEvent.deltaY > 0){
-            this.moveScroll(i+1);    
-        }else{
-            this.moveScroll(i-1);
-        }
-      }   
-   });
-
-}
-
-PageScroll.prototype.setPos = function(){
-    // console.log("setPos");
-    this.posArr=[];
-    this.page.each((index)=>{
-        this.posArr.push(this.page.eq(index).offset().top);
-    });
-    // console.log(this.posArr);
-}
-
-PageScroll.prototype.moveScroll = function(index){
-    // console.log("moveScroll");
-    $("html,body").stop().animate({scrollTop: this.posArr[index]}, this.speed, ()=>{
-        this.enableEvt = true;
-    }); 
-}
-
-PageScroll.prototype.activation = function(scroll){
-    // console.log("activation");
-    this.page.each((index)=>{
-        var minScroll= this.posArr[index] - $(window).height()/2;
-        var maxScroll= this.posArr[index] + $(window).height()/2;
-        //if(scroll>= this.posArr[index]+this.base){
-        if(scroll>= minScroll && scroll <= maxScroll){  
-          this.btns.children("a").removeClass("on");
-          this.btns.eq(index).children("a").addClass("on");
-
-          this.page.removeClass("on");
-          this.page.eq(index).addClass("on");
-        }
-    }); 
-}
-*/
 
 ///////////////////////////////////////////////
 /*
@@ -345,169 +238,209 @@ $(window).on(eventScroll, function(e) {
 
 ///////////////////////////////////////////////
 
-/*
-function ImageSlide(option) {
-    console.log("imageSlide");
-    this.init(option);
-    this.bindingEvent();
+const panel = document.querySelector("ul.imagePanel");
+const panel_list = panel.querySelectorAll("li");
+const indicator = document.querySelector("ul.indicator");
+const btnPrev = document.querySelector(".btnPrev");
+const btnNext = document.querySelector(".btnNext");
+let indicator_link;
+const panel_len = panel_list.length;
+let indicator_tag = '';
+let slideNow = 0;
+let slidePrev = 0;
+let slideNext = 0;
+let slideFirst = 0;
+let slideGap; 
+const speed = 800;
+let enableClick = true;
+
+document.addEventListener("DOMContentLoaded", ()=>{
+    slideInit();
+    indicatorStatus(slideFirst);
+    indicator_link.forEach((link, index)=>{
+    link.addEventListener("click", (e)=>{
+      e.preventDefault();      
+      indicatorSlide(index);      
+    })  
+  })
+})
+
+function slideInit() {
+  panel_list.forEach((curent, index)=>{
+    indicator_tag += `<li><a href="#">${index}</a></li>`;
+  })
+  indicator.innerHTML = indicator_tag;
+  indicator_link = indicator.querySelectorAll("li");
+  indicator_link[slideFirst].classList.add("on");
+
+  panel.style.width = `${100*panel_len}%`;
+  panel_list.forEach((list) => {
+    list.style.width = `${100/panel_len}%`;
+  })
+  panel.prepend(panel.lastElementChild);
 }
-
-ImageSlide.prototype.init = function(option) {
-    console.log("ImageSlide - init");
-    this.$imgSildeWrap = $(option.wrap);
-    this.$panel = $(option.panel);
-    this.$indicator = $(option.indicator);
-    this.$indicatorBtn =  this.$indicator.find("li");
-    this.slideList = this.$panel.find("li");
-    this.slideTotal = this.$panel.find("li").length;
-    this.$prev = $(".prev");
-    this.$next = $(".next");
-    this.slidePrev = 0;
-    this.slideNext = 0;
-    this.slideNow = 0;
-    this.slideFirst = 1;
-    this.isFirst = true;
-    this.speed = option.speed;
-    this.indicatorCount = 0;
-    this.enableActive = true;
-}
-
-ImageSlide.prototype.bindingEvent = function(option) {
-    console.log("ImageSlide - bindingEvent");
-    this.setSildeWrap();
-    this.setSlide(this.slideFirst);
-
-    $("body").on('click', "ul.indicator > li > a", (e) => {
-        e.preventDefault();
-        //var index = $(this).attr("data-index");
-
-        var isOn = $(e.currentTarget).hasClass("on");
-        if(isOn) return;
-
-        var index = $(e.currentTarget).attr("data-index");
-        if(this.enableActive) {
-            this.enableActive = false;
-            this.setSlide(index);
+  
+btnPrev.addEventListener("click", (e)=>{   
+   console.log("clicked!!!! prevBtn");   
+   e.preventDefault(); 
+   if(enableClick) {
+     enableClick = false;
+     indicatorStatus(slidePrev);
+     const ani = new AnimationFrame(panel, {
+        prop : "left",
+        value : "0%",
+        duration : speed,
+        callback : () => {
+             panel.style["left"] = `-100%`;  
+             panel.prepend(panel.lastElementChild);    
+             enableClick = true;
         }
-        
-    });
+      }) 
+      ani.init();  
+  }
+})
 
-    this.$next.on("click", (e) => {
-        e.preventDefault();
+btnNext.addEventListener("click", (e)=>{   
+   console.log("clicked!!!! nextBtn");   
+   e.preventDefault();  
+   if(enableClick) {
+     enableClick = false;
+     indicatorStatus(slideNext);
+     const ani = new AnimationFrame(panel, {
+        prop : "left",
+        value : "-200%",
+        duration : speed,
+        callback : () => {
+             panel.style["left"] = `-100%`;             
+             panel.append(panel.firstElementChild);
+             enableClick = true;
+        }   
+    }) 
+    ani.init();  
+  }
+})
 
-        if(this.enableActive) {
-            this.enableActive = false;
-            this.slideShowNext(null);
-        }
-    });
-    
-    this.$prev.on("click", (e) => {
-        e.preventDefault();
-        if(this.enableActive) {
-            this.enableActive = false;
-            this.slideShowPrev(null);
-        }
-    });
-    
-}
-
-ImageSlide.prototype.setSildeWrap = function () {    
-    console.log("setSildeWrap");
-    this.$panel.css({
-        width : 100*this.slideTotal + "%",
-        marginLeft : "-100%",
-        height : "100%"
-    })
-    this.$panel.find("li").css({
-        width : 100/this.slideTotal + "%",
-        height : "100%"
-    })
-    this.$panel.find("li").last().prependTo(this.$panel);
-
-    this.$panel.find('li').each((i) => {
-        $(this).css({'left': (i * 100) + '%'}); 
-        this.$indicator.append('<li><a href="#" data-index=' + (i+1) +'>' + (i + 1) + '</a></li>\n');   
-    });
-}
-
-ImageSlide.prototype.setSlide = function(_index) {
-    if (this.slideNow === 0) {
-        this.$panel.css({'transition': 'none', 'left': -((_index) * 100) + '%'});
-        this.setSlideStatus(_index);
-    } else {
-        this.indicatorCount = _index - this.slideNow ;
-        if(this.indicatorCount > 0 ) {
-            this.slideShowNext(this.indicatorCount)
-        } else {
-            this.slideShowPrev(Math.abs(this.indicatorCount));
-        }        
-    }
-}
-
-ImageSlide.prototype.setSlideStatus = function(_index) {
-    console.log("setSlideStatus");
-    
-    this.slideNow = _index = _index > this.slideTotal ? 1 : _index ;
-    this.slideNow = _index = _index < 1 ? this.slideTotal : _index ;
-    this.slidePrev = (_index - 1) < 1 ? this.slideTotal : _index - 1;
-    this.slideNext = (_index + 1) > this.slideTotal ? 1 : _index + 1;
-
-    this.$imgSildeWrap.find("ul.indicator li").children("a").removeClass("on");
-    this.$imgSildeWrap.find("ul.indicator li").eq(_index - 1).children("a").addClass("on");
-    
-    //console.clear();
-    console.log(`_index : ${_index}`);
-    console.log(`slideNow : ${this.slideNow}`);
-    console.log(`slidePrev : ${this.slidePrev}`);
-    console.log(`slideNext : ${this.slideNext}`);
-}
-
-ImageSlide.prototype.slideShowNext = function (_indicatorCount) {
-    console.log("slideShowNext");
-
-    var leftValue;
-    if(_indicatorCount === null) { leftValue  = 1; }
-    else { leftValue = _indicatorCount }
-
-    setTimeout(() => {
-            this.$panel.find("li").first().appendTo(this.$panel);
-            this.$panel.css({marginLeft: "0%"});
-            setTimeout(() => {                
-                    this.$panel.stop().animate({marginLeft: -((leftValue) * 100) + '%'}, this.speed, () =>  {
-                          for(let i=2;i<=leftValue;i++) {
-                              this.$panel.find("li").first().appendTo(this.$panel);   
-                              this.$panel.css({marginLeft: -((i) * 100) + '%'});
-                          }                            
-                          this.setSlideStatus(this.slideNow+leftValue); ///////                     
-                          this.$panel.css({marginLeft: "-100%"});
-                          this.enableActive = true;                  
-                    });              
-            })
-    });
-}
-
-ImageSlide.prototype.slideShowPrev = function (_indicatorCount) {
-    console.log("slideShowPrev");
-    
-    var rightValue;
-    if(_indicatorCount === null) { rightValue = 1; }
-    else { rightValue = _indicatorCount; console.log(rightValue); }
-
-    setTimeout(() => {
-            for(let i=2;i<=rightValue;i++) {
-                //$panel.find("li").first().appendTo($panel);   
-                this.$panel.find("li").last().prependTo(this.$panel);
-                this.$panel.css({marginLeft: -((i) * 100) + '%'});
+function indicatorSlide(index) {
+      if(slideNow > index) { 
+          indicatorStatus(index);
+          const ani = new AnimationFrame(panel, {
+            prop : "left",
+            value : "0%",
+            duration : speed,
+            slideGap : slideGap,
+            btnName : "btnPrev",
+            callback : () => {
+                 panel.style["left"] = `-100%`;  
+                 panel.prepend(panel.lastElementChild);             
+            },
+            panelSet : () => {            
+                 panel.prepend(panel.lastElementChild);    
+                 panel.style["left"] = `${-100*slideGap}%`; 
             }
-            setTimeout(() => {      
-                this.$panel.stop().animate({marginLeft: -((0) * 100) + '%'}, this.speed, () => {
-                     this.$panel.find("li").last().prependTo(this.$panel); 
-                      this.$panel.css({marginLeft: "-100%"});
-                      this.setSlideStatus(this.slideNow-rightValue);  
-                      this.enableActive = true;  
-                });
-            });
-    });      
+        }) 
+        ani.init();  
+      }
+      else {  
+          indicatorStatus(index);
+          const ani = new AnimationFrame(panel, {
+            prop : "left",
+            value : "-200%",
+            duration : speed,
+            slideGap : slideGap,
+            btnName : "btnNext",
+            callback : () => {
+                 panel.style["left"] = `-100%`;             
+                 panel.append(panel.firstElementChild);
+            },
+            panelSet : () => {              
+                 panel.append(panel.firstElementChild);  
+                 panel.style["left"] = `0%`; 
+            }
+        }) 
+        ani.init(); 
+      } 
+      
 }
 
-*/
+function indicatorStatus(index) {
+   indicator_link.forEach((curent, index)=>{
+        curent.classList.remove("on");
+   })
+   indicator_link[index].classList.add("on");  
+   indexControl(index);  
+}
+
+function indexControl(index) {    
+  slideGap = index - slideNow;
+  if(slideGap < 0) { slideGap = Math.abs(slideGap); }
+    
+  slideNow = index;
+  slidePrev = index < 1 ? panel_len-1 : index - 1;
+  slideNext = index >= panel_len-1 ? 0 : index + 1;  
+}
+ 
+ 
+ function AnimationFrame(selector, option) {
+   //console.log("AnimationFrame start!!");
+   this.element = selector;
+   this.parent = this.element.parentElement;
+   this.parent_size = parseInt(getComputedStyle(this.parent)["width"]);
+   this.start = performance.now();  
+   this.cancel = null;
+   this.currentValue;
+   this.progress;
+   this.prop = option.prop ;
+   this.option_value = option.value;
+   this.value = parseInt(this.option_value);
+   (this.option_value.indexOf("px") === -1) ? this.type = "%" : this.type = "px";
+   this.duration = option.duration;
+   this.callback = option.callback; 
+   if(option.slideGap !== null) this.slideGap = option.slideGap ;
+   if(option.panelSet !== null) this.panelSet = option.panelSet; 
+   if(option.btnName !== null) (option.btnName === "btnNext") ? this.btnName = "btnNext" : this.btnName = "btnPrev";
+   this.addValue = 0;
+   this.isFrist = true;
+   
+   AnimationFrame.prototype.init = () => {       
+     if(this.slideGap >= 2 && this.btnName == "btnNext") {
+         console.log("this.btnName == btnNext");
+         this.panelSet();
+         if(this.slideGap >= 3) this.addValue = -100;
+         console.log("this.addValue >>> " + this.addValue);
+     } else if (this.slideGap >= 2 && this.btnName == "btnPrev") {
+         console.log("this.btnName == btnPrev");        
+         if(this.slideGap >= 3) { this.addValue = 0; 
+             for(let i=2;i<=this.slideGap;i++) this.panelSet();
+         } else {
+             this.panelSet();
+         }
+     } 
+     
+     if(this.type === "%") { this.currentValue = parseInt(getComputedStyle(this.element)[this.prop])/this.parent_size*100;}
+     else { this.currentValue = parseInt(getComputedStyle(this.element)[this.prop]) }     
+     this.cancel = window.requestAnimationFrame((time)=>this.run(time)); 
+   }  
+   
+   AnimationFrame.prototype.run = (timestamp) =>{
+       const timeLast  = timestamp - this.start;
+       this.progress  = timeLast /this.duration;  
+ 
+       if(this.progress  < 0) this.progress  = 0;
+       if(this.progress > 1) { if (this.isFrist) { this.progress = 1; this.isFrist = false } }
+ 
+       if(this.progress  <= 1){
+         window.requestAnimationFrame(this.run);
+         let result = this.currentValue + (((this.value + this.addValue)-this.currentValue) * this.progress);
+         this.element.style[this.prop] = `${result}%`;   
+       } else {
+         cancelAnimationFrame(this.cancel);
+         setTimeout(()=>{
+           if(this.slideGap >= 3) { 
+             if(this.btnName == "btnPrev") for(let i=this.slideGap-1;i<this.slideGap;i++) { this.callback(); }
+             if(this.btnName == "btnNext") for(let i=this.slideGap-1;i<=this.slideGap;i++) { this.callback(); }
+           } else { this.callback(); }         
+         }, 0)
+       }
+   }
+   
+ }

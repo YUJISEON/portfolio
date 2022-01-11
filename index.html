@@ -12,20 +12,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script defer src="main.js"></script>   
     <script>
-        $(document).ready(function(){
+        document.addEventListener("DOMContentLoaded", ()=>{
             new PageScroll({
                 panel : "section",
                 btns : "#navi li",
                 base : 0
             });
              
-            // new ImageSlide({
-            //     wrap : ".imgSildeWrap",
-            //     panel : "ul.imgContents",
-            //     indicator : "ul.indicator",
-            //     arrow : "p.control",
-            //     speed : 500
-            // })      
+            /*
+            new ImageSlide({
+                wrap : ".imgSildeWrap",
+                panel : "ul.imgContents",
+                indicator : "ul.indicator",
+                arrow : "p.control",
+                speed : 500
+            })*/      
         })
     </script> 
 </head>
@@ -86,20 +87,22 @@
         </section>
         <section id="page4">
             <h2>Portfolio</h2>
-            <div class="imgSildeWrap">
-                <ul class="imgContents clearFix">
-                    <li data-index="1">1</li>
-                    <li data-index="2">2</li>
-                    <li data-index="3">3</li>
-                    <li data-index="4">4</li>
-                </ul>
+            <div class="page4__contents">
+                <div class="imgSildeWrap">
+                    <ul class="imagePanel">
+                        <li data-index="0"><a href="#"></a></li>
+                        <li data-index="1"><a href="#"></a></li>
+                        <li data-index="2"><a href="#"></a></li>
+                        <li data-index="3"><a href="#"></a></li>
+                    </ul>
+                </div>
                 <ul class="indicator">
                             
                 </ul>
-                <p class="control">
-                    <a href="#" class="prev">&langle; </a> 
-                    <a href="#" class="next">&rangle; </a> 
-                </p>
+                <div class="control">
+                    <a href="#" class="btnPrev"><span>PREV</span></a> 
+                    <a href="#" class="btnNext"><span>NEXT</span></a> 
+                </div>
             </div>
         </section>
       </main>

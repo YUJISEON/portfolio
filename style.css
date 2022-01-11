@@ -380,70 +380,106 @@ nav #navi {
    
 }
 
-#page4 .imgSildeWrap {
-    width: 800px; height: 70vh;
-    position: absolute; 
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    overflow: hidden;
+#page4 .page4__contents {
+    width: 70vw; height: 50%;
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); 
 }
 
-#page4 .imgSildeWrap ul.imgContents {
-    width: 400%; height: 100%;
+#page4 .page4__contents .imgSildeWrap {
+    width: 100%; height: 100%;
+    position: absolute; top: 0; left: 0;
+   overflow: hidden;
 }
 
-#page4 .imgSildeWrap ul.imgContents li {
-    width: 800px; height: 100%;
-    float: left; display: flex; justify-content: center; align-items: center;
+ul.imagePanel { 
+    /*   width: 400%;  */
+    height: 100%;
+    position: absolute; top: 0; left: -100%;
+    display: flex; justify-content: start;
+    /*   transition : 0.5s; */
 }
-
-#page4 .imgSildeWrap ul.imgContents li[data-index="1"] {background-color: skyblue;}
-#page4 .imgSildeWrap ul.imgContents li[data-index="2"] {background-color: orange;}
-#page4 .imgSildeWrap ul.imgContents li[data-index="3"] {background-color: aqua;}
-#page4 .imgSildeWrap ul.imgContents li[data-index="4"] {background-color: greenyellow;}
-
-#page4 .imgSildeWrap ul.indicator {
-    position: absolute;
-    bottom: 0;
-    left: 0;    
-    width: 100%;
-    text-align: center;
+    
+ul.imagePanel.prev { left: 0; }
+ul.imagePanel.next { left: -200%; }
+    
+ul.imagePanel li { 
+    /*   width: 25%;  */
+    height: 100%;
+    display: flex; justify-content: center; align-items: center;
 }
-
-#page4 .imgSildeWrap ul.indicator li {
-    display: inline-block;
+    
+ul.imagePanel li a {
+    width: 100%; height: 100%; display: block;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
+    
+ul.imagePanel li[data-index="0"] a { background-image : url(https://yujiseon.github.io/training/infinite_slide/img01.jpg); }
+ul.imagePanel li[data-index="1"] a { background-image : url(https://yujiseon.github.io/training/infinite_slide/img02.jpg); }
+ul.imagePanel li[data-index="2"] a { background-image : url(https://yujiseon.github.io/training/infinite_slide/img03.jpg); }
+ul.imagePanel li[data-index="3"] a { background-image : url(https://yujiseon.github.io/training/infinite_slide/img04.jpg); }
 
-#page4 .imgSildeWrap ul.indicator li + li {
-    margin-left: 10px;    
-}
-
-#page4 .imgSildeWrap ul.indicator li a {
-    width: 15px;
-    height: 15px;
-    display: block;
-    border-radius: 20px;
-    background-color: #eee;
-    overflow: hidden;
-    text-indent: -9999px;
-    transition: 0.5s;
-}
-
-#page4 .imgSildeWrap ul.indicator li a.on {
-    /*animation: checked 1.5s ease;
-    animation-fill-mode: forwards;*/
-    width: 30px;
-    background-color: red;
-}
-
-#page4 .imgSildeWrap .control a {
-    position: absolute;
-    top: 50%;
+ul.indicator {
+    width: 100%; 
+    position: absolute; bottom: -5vh; left: 0;
+    display: flex; justify-content: center; align-items: center;
+  }
+  
+  ul.indicator li + li { 
+    margin-left: 10px; 
+  }
+  
+  ul.indicator li a { 
+    display: block; width: 15px; height: 15px; 
+    border: 3px solid #111; border-radius: 20px; 
+    overflow: hidden; text-indent: -999px;
+  }
+  
+  ul.indicator li.on a {
+    background: #111;
+  }
+  
+  div.control a {
+    width: 60px; height: 60px;
+    position: absolute; top: 50%; 
     transform: translateY(-50%);
-    font-size: 70px;
-}
-#page4 .imgSildeWrap .prev {left: 50px;}
-#page4 .imgSildeWrap .next {right: 50px;}
+  }
+  
+  div.control .btnPrev { left: -10vh;}
+  div.control .btnNext { right: -10vh; }
+  
+  div.control .btnPrev span,
+  div.control .btnNext span {
+    position: absolute; top: 50%; 
+    transform: translateY(-50%); 
+  }
+  
+  div.control .btnPrev::before,
+  div.control .btnPrev::after,
+  div.control .btnNext::before,
+  div.control .btnNext::after {
+    content: '';
+    display: block; 
+    position: absolute; top: 50%;
+    transform: translateY(-50%); 
+    width: 100%; height: 2px; background: #777;
+    transition: 0.5s 0.2s;
+  }
+  
+  div.control .btnPrev::before,
+  div.control .btnPrev::after { transform-origin: left top; }
+  div.control .btnPrev::before { transform: rotate(-45deg); }
+  div.control .btnPrev::after {  transform: rotate(45deg); }
+  div.control .btnPrev span { right: 0; }
+  
+  div.control .btnNext::before,
+  div.control .btnNext::after { transform-origin: right top;}
+  div.control .btnNext::before { transform: rotate(45deg); }
+  div.control .btnNext::after {  transform: rotate(-45deg); }
+  div.control .btnNext span { left: 0; }
+  
 
 
 
