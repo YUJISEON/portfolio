@@ -19,13 +19,13 @@
                 base : 0
             });
              
-            new ImageSlide({
-                wrap : ".imgSildeWrap",
-                panel : "ul.imgContents",
-                indicator : "ul.indicator",
-                arrow : "p.control",
-                speed : 500
-            })      
+            // new ImageSlide({
+            //     wrap : ".imgSildeWrap",
+            //     panel : "ul.imgContents",
+            //     indicator : "ul.indicator",
+            //     arrow : "p.control",
+            //     speed : 500
+            // })      
         })
     </script> 
 </head>
@@ -36,10 +36,10 @@
             <i class="fa fa-bars" aria-hidden="true"></i>
           </div>
           <ul id="navi"> 
-            <li><a href="#page1" class="on">Home<span></span></a></li>
-            <li><a href="#page2">About Me<span></span></a></li>
-            <li><a href="#page3">Technical<span></span></a></li>
-            <li><a href="#page4">Portfolio<span></span></a></li>
+            <li data-index="0"><a href="#page1" class="on">Home<span></span></a></li>
+            <li data-index="1"><a href="#page2">About Me<span></span></a></li>
+            <li data-index="2"><a href="#page3">Technical<span></span></a></li>
+            <li data-index="3"><a href="#page4">Portfolio<span></span></a></li>
           </ul>
         </nav>
       </header>

@@ -1,6 +1,165 @@
 
 'use strict';
 
+function PageScroll(option) {    
+    this.init(option);
+    this.setPos();    
+    this.setPage();
+    this.bindingEvent();
+}
+
+PageScroll.prototype.init = (option) => {
+    console.log("PageScroll - init");
+    this.page = document.querySelectorAll(option.panel);
+    this.btns = document.querySelectorAll(option.btns);
+    this.pageNum = this.page.length;
+    this.posArr = [];
+    this.speed = 1000;
+    this.enableEvt = true;
+    this.eventScroll = null;    
+    this.pageNow = 0;
+    this.pagePrev = 0;
+    this.pageNext = 0;    
+    this.num=0;
+    this.startTime=0;
+    this.currentValue=0;
+    //this.timerId = '';
+    //this.base = option.base;
+    //this.onWheelRepeat = false;
+    //this.onAnimation = false
+    //this.isWheelBlocked = false;
+    //console.log(`init this : ${this}`);
+}
+
+PageScroll.prototype.bindingEvent = () => {
+    console.log("PageScroll - bindingEvent");
+
+    this.eventScroll = ('onmousewheel' in window) ? 'mousewheel' : 'DOMMouseScroll';
+
+    window.addEventListener("resize", ()=>{
+        console.log("resize");
+
+        PageScroll.prototype.setPos();
+        var active = document.querySelector(".on").parentElement;
+        var index = active.getAttribute("data-index");
+        PageScroll.prototype.moveScroll(index); ;
+    });
+
+    this.btns.forEach((el, index)=>{
+        el.addEventListener("click", (e)=>{
+            e.preventDefault();
+
+            var isOn = el.querySelector("a").classList.contains("on");
+            if(isOn) return;
+    
+            if(this.enableEvt){
+                this.enableEvt = false;                
+                PageScroll.prototype.moveScroll(index);
+            }   
+        });
+    })
+
+    window.addEventListener("scroll", ()=>{
+        PageScroll.prototype.setPage()
+    });
+
+    window.addEventListener(this.eventScroll, (e)=>{
+        e.preventDefault();
+
+        var delta = 0;
+        if(this.enableEvt){
+            this.enableEvt = false;
+    
+            if (this.eventScroll == 'mousewheel') {
+                delta = e.wheelDelta / -150; // 표준브라우저 : 크롬, IE
+            } else {
+                delta = e.detail / 3; // 파이어폭스
+            }
+
+            if (delta > 0) {
+                PageScroll.prototype.moveScroll(this.pageNext); // 아래로 돌림
+            } else {
+                PageScroll.prototype.moveScroll(this.pagePrev); // 위로 돌림
+            }
+        } 
+    }, {passive: false});
+}
+
+PageScroll.prototype.setPos = ()=>{
+    console.log("setPos");
+    this.posArr = [];
+    this.page.forEach((el)=>{
+        this.posArr.push(el.offsetTop);
+    });
+    console.log(`this.posArr : ${this.posArr}`);;
+}
+
+PageScroll.prototype.moveScroll = (index)=>{
+    console.log("moveScroll");
+    this._scrollTop = this.posArr[index];
+    this.startTime = performance.now();
+    this.currentValue = Math.ceil(window.scrollY);
+    this.result = 0;
+    this.isFrist = true;
+    this.num=0;
+    if(this.currentValue !== this._scrollTop) requestAnimationFrame((time)=>{PageScroll.prototype.action(time)})
+    else { this.enableEvt = true; }
+}
+
+PageScroll.prototype.action = (time)=> {
+    console.log(`time : ${time} / this.startTime : ${this.startTime}`);   
+    var timeLast = time - this.startTime;
+    if(timeLast < 0) timeLast = timeLast - timeLast;
+    var progress = timeLast / this.speed;
+
+	if(progress < 0) progress = 0;
+    if(progress > 1) { if (isFrist) { progress = 1; isFrist = false } }
+      
+    if(progress <= 1) {           
+        //console.log("action");
+        console.log(`${this.num++}`);
+        requestAnimationFrame((time)=>{PageScroll.prototype.action(time)});  
+        this.result = this.currentValue + ((this._scrollTop-this.currentValue) * progress);
+        window.scrollTo(0, this.result);
+        console.log(`timeLast : ${timeLast}`);   
+        console.log(`progress : ${progress}`);
+        console.log(`this.result : ${this.result}`);       
+    } else {
+        //cancelAnimationFrame(this.timer);
+        this.enableEvt = true;
+    }
+}
+
+PageScroll.prototype.setPage = ()=>{
+    //console.log("setPage");
+    var _scrollTop = window.scrollY;
+    var minScroll = 0;
+    var maxScroll = 0;
+
+    this.page.forEach((el, index)=>{
+
+        minScroll= this.posArr[index] - window.innerHeight/2;
+        maxScroll= this.posArr[index] + window.innerHeight/2;
+
+        if(minScroll < _scrollTop && _scrollTop <= maxScroll){  
+            this.pageNow = index;
+            this.pagePrev = index < 1 ? 0 : index - 1;
+            this.pageNext = index >= this.pageNum-1 ? this.pageNum - 1 : index + 1;
+
+            this.btns.forEach((el)=>{ el.querySelector("a").classList.remove("on"); });
+            this.btns[index].querySelector("a").classList.add("on");
+
+            //console.log(`index : ${index}`);
+            //console.log(`pageNow : ${pageNow}`);
+            //console.log(`pagePrev : ${pagePrev}`);
+            //console.log(`pageNext : ${pageNext}`);
+        }
+    }); 
+}
+
+   
+
+/*
 function PageScroll(option) {
     // console.log("PageScroll");
     this.init(option);
@@ -98,9 +257,10 @@ PageScroll.prototype.activation = function(scroll){
         }
     }); 
 }
+*/
 
 ///////////////////////////////////////////////
-
+/*
 
 var $page1_top = $('#page1').offset().top;
 var $page2_top = $('#page2').offset().top;
@@ -180,11 +340,12 @@ $(window).on(eventScroll, function(e) {
     }
   
 })
-
+*/
 
 
 ///////////////////////////////////////////////
 
+/*
 function ImageSlide(option) {
     console.log("imageSlide");
     this.init(option);
@@ -264,7 +425,7 @@ ImageSlide.prototype.setSildeWrap = function () {
     this.$panel.find("li").last().prependTo(this.$panel);
 
     this.$panel.find('li').each((i) => {
-        $(this).css({'left': (i * 100) + '%'}); /* , 'display': 'block' */
+        $(this).css({'left': (i * 100) + '%'}); 
         this.$indicator.append('<li><a href="#" data-index=' + (i+1) +'>' + (i + 1) + '</a></li>\n');   
     });
 }
@@ -349,3 +510,4 @@ ImageSlide.prototype.slideShowPrev = function (_indicatorCount) {
     });      
 }
 
+*/
