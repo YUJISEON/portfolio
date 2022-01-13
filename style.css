@@ -3,6 +3,20 @@
 
 :root {
     --text-color: #fff;
+    --text-color-backDark :#fff;
+    --text-color-backLight : #000a12;
+    --text-color-focus : #FFBF00;
+  
+    --button-color-backDark: #fff;
+    --button-color-focus-backDark: #263238;
+    --button-color-backLight: #4f5b62;
+    --button-color-focus-backLight: #4f5b62;
+  
+    --background-color-header: #000a12;
+    --background-color-baisc: #263238;
+    --background-color-side: #4f5b62;
+    --background-color-ligt: #fff;
+    --background-color-opacity: 0.6;
 }
 
 * {
@@ -48,7 +62,6 @@ section > h2 {
     /*background: rgba(0,0,0,1.0);*/
     color: #000;
 }
-
 #page3 {
     background: #263238;
 }
@@ -213,7 +226,8 @@ nav #navi {
 }
 
 #page2 .page2__contents .page2__img img {
-    width: 75vw;
+    height: 85vh;
+    min-width: 50vw;
     position: absolute;
     bottom: -7.6vh; left: 90%;
     transform: translateX(-50%);
@@ -375,26 +389,69 @@ nav #navi {
 
 /********************************************/
 
-/* page3 커스텀 모션 */
-#page3 {
-     perspective: 600px;
-    display: flex; justify-content: center; align-items: center;
-}
-
-/*
-#page3 article {
-    width: 300px; height: 400px; background: #fff; margin: 20px;
-    transform: rotateY(220deg) translateY(100px); opacity: 1;
-    transition: 0.5s;
-}
-#page3.on article {
-    transform: rotateY(0deg) translateY(0px); opacity: 1;
-}
-#page3 article:nth-of-type(1) {transition-delay: 0s;}
-#page3 article:nth-of-type(2) {transition-delay: 0.2s;}
-#page3 article:nth-of-type(3) {transition-delay: 0.4s;}
-*/
-
+.page3__contents {
+    display: flex;
+    flex-direction: column;
+    justify-content : space-around;
+    color: #fff;
+    text-align: center;  
+  }
+  
+  .page3__contents .page3__content > p {
+    margin-bottom: 50px;
+    font-weight: 0;
+    font-size: 30px;
+    position: relative;
+  }
+  
+  .page3__contents .page3__content > p::before {
+    content: '';
+    width: 40vw;
+    max-width: 500px;
+    border: 1px solid #fff;
+    position: absolute;
+    top: 50%; left: 0;
+    transform : translateY(-50%);
+  }
+  
+  .page3__contents .page3__content > p::after {
+    content: '';
+    width: 40vw;
+    max-width: 500px;
+    border: 1px solid #fff;
+    position: absolute;
+    top: 50%; right: 0;
+    transform : translateY(-50%);
+  }
+  
+  .page3__contents .page3__list {
+    display: flex;
+    justify-content : space-around;    
+  }
+  
+  .page3__contents .page3__list > div {
+    display: flex;
+    flex-direction: column;
+    justify-content : space-between;
+    align-items: center;
+    padding: 10px;
+    flex : 1;
+  }
+  
+  .page3__contents .page3__list > div > .item__img {
+    width: 100px; height: 100px;
+    border-radius: 100%;
+    background: #4F5B62;
+  }
+  
+  .page3__contents .page3__list > div > .item__title {
+    margin: 10px 0;
+  }
+  
+  .page3__contents .page3__list > div > .item__desc {
+    
+  }
+  
 /********************************************/
 
 #page4 {
@@ -505,9 +562,200 @@ ul.indicator {
 
 
 /********************************************/
+#page5 {
+    background: var(--background-color-baisc);
+    display : flex;  
+    flex-direction: column;
+    justify-content: space-between;
+    height: 95vh;
+    color: var(--text-color-backDark);
+    
+}
 
+#page5 > article {
+  width: 100%;
+  position: relative;
+}
+
+#page5 > article .contents {
+    width: 98vw;
+    max-width: 1240px;
+    /*     height: 85vh; */
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 50px 0;   
+    height: 100%;
+}
+
+
+#page5 > article.page5__contents__top {
+    height: 30vh;
+    background-image: url('https://yujiseon.github.io/portfolio/img/giorgio-trovato-v_bri4iVuiM-unsplash.jpg');
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-size: cover;    
+    background-attachment: fixed;
+    position: relative;
+} 
+
+#page5 > article.page5__contents__top::after {
+    content: '';
+    position: absolute;
+    background: #000;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    opacity: var(--background-color-opacity);
+}
+
+#page5 > article.page5__contents__top .contents{
+    z-index: 1;
+    position: relative;
+}
+
+#page5 > article.page5__contents__top p {
+    margin-top: 50px;
+    font-size: 60px;
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: -0.002em;
+    font-family: SF Pro Display,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif;
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+}
+
+#page5 > article.page5__contents__bottom {
+    height: 65vh;
+    display : flex;  
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;    
+    text-align: center;
+}
+
+
+#page5 > article.page5__contents__bottom form {
+    margin : 10px auto;
+    width: 50%;
+    display : flex;  
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;    
+    text-align: center;
+}
+
+#page5 > article.page5__contents__bottom form fieldset {
+  border: none; 
+  width: 100%;
+}
+
+#page5 > article.page5__contents__bottom form legend {
+    margin-bottom: 50px;
+    font-weight: 0;
+    font-size: 30px;
+    font-family: SF Pro Display,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+.formItem {
+    position :relative;
+}
+
+.page5__contents__bottom input[type=text],
+.page5__contents__bottom input[type=email],
+.page5__contents__bottom input[type=tel],
+.page5__contents__bottom textarea {
+    width: 100%;
+    padding: 12px 0px 12px 0px;
+    border: 1px solid black;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: var(--background-color-ligt);
+    border-radius: 5px;
+    
+}
+
+.page5__contents__bottom input[type=text],
+.page5__contents__bottom input[type=email],
+.page5__contents__bottom input[type=tel],
+.page5__contents__bottom textarea {
+    padding-left: 10px;
+    box-sizing: border-box;
+}
+
+.page5__contents__bottom .formItem::before {
+  content: '';
+  width: 20px; height: 20px;
+  position: absolute;
+  top: 50%; right: 10px;
+  transform: translateY(-50%);  
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: contain;  
+  opacity: 0.5;
+}
+
+.page5__contents__bottom .nameForm::before {
+  background-image: url('https://yujiseon.github.io/portfolio/img/user-solid.png'); 
+}
+
+.page5__contents__bottom .emailForm::before {
+  background-image: url('https://yujiseon.github.io/portfolio/img/mail.png'); 
+}
+
+.page5__contents__bottom .phoneForm::before {
+  background-image: url('https://yujiseon.github.io/portfolio/img/user-solid.png'); 
+}
+
+.page5__contents__bottom .messageForm::before {
+  background-image: url('https://yujiseon.github.io/portfolio/img/pen.png');
+  top: 20px; transform: translateY(0%);
+}
+/*
+#name, #phone { 
+    margin-right: 1%;
+}*/
+
+textarea {
+    height: 100px;
+    resize: none;
+}
+
+input#submit {     
+    /*position: absolute;     
+    bottom:0;  
+    left: calc(50% - 125px);   */
+    width: 140px;
+    height: 50px;
+    background: var(--button-color-backDark);
+    color: var(--text-color-backLight);
+    text-align: center;
+    line-height: 50px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .3s;
+    margin-top: 30px;
+}
+
+input#submit:hover {
+    background: var(--button-color-focus-backLight);    
+    color: var(--text-color-backDark);
+}
+
+/********************************************/
 
 footer {
     width: 100%;
-    height: 5vh;
+    height: 5vh;  
+    background: var(--background-color-baisc);
+    color: var(--text-color-backDark);
+    position: relative;
+    text-align: center;
 }
+
+footer .contents {  
+    padding: 0 0; height: 100%;
+}
+
