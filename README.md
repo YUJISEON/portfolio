@@ -1,4 +1,5 @@
-# ryujiseon portfol
+# ryujiseon portfolio
+
 RYUJISEON portfolio 1 : Portfolio Home Site
 
 - 생성자 함수를 이용한 객체 지향 문법
