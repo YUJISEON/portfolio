@@ -10,7 +10,7 @@
     --button-color-backDark: #fff;
     --button-color-focus-backDark: #263238;
     --button-color-backLight: #263238;
-    --button-color-focus-backLight: #4f5b62;
+    --button-color-focus-backLight: #FFC700;
   
     --background-color-header: #000a12;
     --background-color-baisc: #263238;
@@ -25,7 +25,7 @@
     /* font-family: 'Roboto', 'Nanum Gothic', sans-serif; */
     font-family: 'Source Sans Pro', 'Nanum Gothic', sans-serif;
     box-sizing: border-box;    
-    font-size: 16px; 
+    font-size: 16px;
 }
 
 ul, ol {
@@ -62,10 +62,16 @@ section > h2 {
 }
 #page3 {
     background: var(--background-color-baisc);
+    color: var(--text-color-backDark);
 }
 
 #page4 {
     background: var(--background-color-ligt);
+    color: var(--text-color-backLight);
+}
+
+#page5 {
+    color: var(--text-color-backDark);
 }
 
 .contents {
@@ -77,7 +83,9 @@ section > h2 {
     padding: 50px 0;
 }
 
-
+h2 {
+    font-size: 50px;
+}
 /********************************************/
 
 header {
@@ -112,6 +120,7 @@ nav #navi {
     transition: 0.5s;
 }
 
+#navi li a:hover,
 #navi li a.on {
     color: var(--text-color-focus);
 }
@@ -205,7 +214,7 @@ nav #navi {
 }
 
 #page2 .page2__contents .page2__introduce {
-    position: absolute; left: 0;
+    position: absolute; left: 0; top: 100px;
     height: 100%;
 }
 
@@ -322,7 +331,7 @@ nav #navi {
 	100%	{text-shadow:  0 0 100px #111; opacity:0;}
 }
 */
-
+/* 
 #page2 .page2__contents .page2__introduce .page2__button {
     position: absolute;
     top: 70%; left: 0;
@@ -340,19 +349,49 @@ nav #navi {
     font-size: 25px;
     text-align: center;
     transition: all .3s;
+} */
+
+#page2 .page2__contents .page2__introduce .page2__channel {
+    position: absolute;
+    top: 70%; left: 0;
+    transform: translateY(-50%);
 }
 
+#page2 .page2__contents .page2__introduce .page2__channel h3 {
+    font-size: 20px;
+}
+
+#page2 .page2__contents .page2__introduce .page2__channel div {
+    display: flex;
+    align-items: center;
+}
+
+#page2 .page2__contents .page2__introduce .page2__channel div a {
+    margin-left: 5px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    color: var(--text-color-backLight);
+}
+
+#page2 .page2__contents .page2__introduce .page2__channel div a:hover {
+    color: var(--text-color-focus)
+}
+
+#page2 .page2__contents .page2__introduce .page2__channel img {
+    width: 25px;
+    margin-right: 5px;
+}
+
+/* 
 #page2 .page2__contents .page2__introduce .page2__button {
     text-align: center;
 }
 
-#page2 .page2__contents .page2__introduce .page2__button:hover  {    
-    /* font-weight: bold; */
-}
 
 #page2 .page2__contents .page2__introduce .page2__button:hover a {
     color: var(--text-color-focus);
-}
+} */
 /********************************************/
 
 .page3__contents {
@@ -403,7 +442,14 @@ nav #navi {
   .page3__contents .page3__list > div > .item__img {
     width: 100px; height: 100px;
     border-radius: 100%;
-    background: var(--background-color-side);
+    background: var(--background-color-ligt);
+    display: flex;
+    justify-content : center;
+    align-items: center;
+  }
+
+  .page3__contents .page3__list > div > .item__img img {
+      width: 50px;
   }
   
   .page3__contents .page3__list > div > .item__title {
@@ -446,40 +492,32 @@ ul.imagePanel.next { left: -200%; }
 ul.imagePanel li { 
     /*   width: 25%;  */
     height: 100%;
-    display: flex; justify-content: center; align-items: center;
 }
-    
-ul.imagePanel li a {
-    width: 100%; height: 100%; display: block;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-}
-    
-ul.imagePanel li[data-index="0"] a { background-image : url(https://yujiseon.github.io/training/infinite_slide/img01.jpg); }
-ul.imagePanel li[data-index="1"] a { background-image : url(https://yujiseon.github.io/training/infinite_slide/img02.jpg); }
-ul.imagePanel li[data-index="2"] a { background-image : url(https://yujiseon.github.io/training/infinite_slide/img03.jpg); }
-ul.imagePanel li[data-index="3"] a { background-image : url(https://yujiseon.github.io/training/infinite_slide/img04.jpg); }
-
+   
 ul.indicator {
     width: 100%; 
     position: absolute; bottom: -5vh; left: 0;
     display: flex; justify-content: center; align-items: center;
-  }
+ }
   
-  ul.indicator li + li { 
+ ul.indicator li + li { 
     margin-left: 10px; 
   }
   
   ul.indicator li a { 
     display: block; width: 15px; height: 15px; 
-    border: 3px solid #111; border-radius: 20px; 
+    background: var(--background-color-baisc); border-radius: 20px; 
     overflow: hidden; text-indent: -999px;
   }
   
-  ul.indicator li.on a {
-    background: #111;
+  ul.indicator li.on a {    
+    animation: checked 1.5s ease;
+    animation-fill-mode: forwards;
   }
+
+@keyframes checked {
+    100% { width: 50px; background: var(--background-color-side); }
+} 
   
   div.control a {
     width: 60px; height: 60px;
@@ -504,7 +542,7 @@ ul.indicator {
     display: block; 
     position: absolute; top: 50%;
     transform: translateY(-50%); 
-    width: 100%; height: 2px; background: #777;
+    width: 100%; height: 2px; background: var(--button-color-backLight);
     transition: 0.5s 0.2s;
   }
   
@@ -520,8 +558,86 @@ ul.indicator {
   div.control .btnNext::after {  transform: rotate(-45deg); }
   div.control .btnNext span { left: 0; }
   
+  div.control .btnPrev:hover span,
+  div.control .btnNext:hover span {
+    color: var(--text-color-focus);
+  }
 
+/********************************************/
 
+ul.imagePanel > li {
+    display: flex;    
+    justify-content: space-between;
+    align-items: center;
+}
+
+ul.imagePanel li .panel__img {
+    margin-right: 30px;
+}
+
+ul.imagePanel li .panel__img img {    
+    height: 35vh;
+}
+
+ul.imagePanel li .panel__info {
+    flex: 50%;   
+    text-align: left;
+    padding: 20px 0;
+    line-height: 2;
+}
+
+ul.imagePanel li .panel__info .info__title {
+    margin: 50px 0;
+    font-size: 39px;
+    font-weight: normal;
+}
+
+ul.imagePanel li .panel__info .info__txt li strong {
+    width: 35%;
+    font-weight: bold;
+    display: inline-block;
+}
+
+ul.imagePanel li .panel__info .info__txt i {
+    color: #1957f3;
+}
+
+ul.imagePanel li .panel__info .info__point {
+    margin: 30px 0;
+    font-size: 18px;
+    font-weight: normal;
+}
+
+ul.imagePanel li .panel__info .info__point span {
+    font-weight: bold;
+}
+
+ul.imagePanel li .panel__info .info__link {
+    display: flex;
+    justify-content: center;
+}
+
+ul.imagePanel li .panel__info .info__link p + p {
+    display : inline-block;
+    margin-left: 10px;
+}
+
+ul.imagePanel li .panel__info .info__link a {
+    display : inline-block;
+    width: 200px;
+    height: 50px;
+    background: var( --button-color-backLight);
+    color: var(--text-color-backDark);
+    text-align: center;
+    line-height: 50px;
+    font-weight: 500;
+    border-radius: 10px;   
+    transition: all .3s;
+}
+
+ul.imagePanel li .panel__info .info__link a:hover {
+    color: var(--text-color-focus);
+}
 
 /********************************************/
 #page5 {
@@ -669,19 +785,13 @@ ul.indicator {
   background-image: url('https://yujiseon.github.io/portfolio/img/pen.png');
   top: 20px; transform: translateY(0%);
 }
-/*
-#name, #phone { 
-    margin-right: 1%;
-}*/
 
 textarea {
     height: 100px; resize: none;
 }
 
 input#submit {     
-    /*position: absolute;     
-    bottom:0;  
-    left: calc(50% - 125px);   */
+    border: none;
     width: 140px;  height: 50px;
     background: var(--button-color-backDark);
     color: var(--text-color-backLight);
@@ -695,7 +805,6 @@ input#submit {
 
 input#submit:hover {
     background: var(--button-color-focus-backLight);    
-    color: var(--text-color-backDark);
 }
 
 /********************************************/

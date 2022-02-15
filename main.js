@@ -9,7 +9,7 @@ function PageScroll(option) {
 }
 
 PageScroll.prototype.init = (option) => {
-    console.log("PageScroll - init");
+    //console.log("PageScroll - init");
     this.page = document.querySelectorAll(option.panel);
     this.btns = document.querySelectorAll(option.btns);
     this.pageNum = this.page.length;
@@ -26,41 +26,42 @@ PageScroll.prototype.init = (option) => {
 }
 
 PageScroll.prototype.bindingEvent = () => {
-    console.log("PageScroll - bindingEvent");
+    const self = PageScroll.prototype;
+    //console.log("PageScroll - bindingEvent");
 
     this.eventScroll = ('onmousewheel' in window) ? 'mousewheel' : 'DOMMouseScroll';
 
     window.addEventListener("resize", ()=>{
-        console.log("resize");
+        //console.log("resize");
 
-        PageScroll.prototype.setPos();
-        var active = document.querySelector(".on").parentElement;
-        var index = active.getAttribute("data-index");
-        PageScroll.prototype.moveScroll(index); ;
+        self.setPos();
+        let active = document.querySelector(".on").parentElement;
+        let index = active.getAttribute("data-index");
+        self.moveScroll(index); ;
     });
 
     this.btns.forEach((el, index)=>{
         el.addEventListener("click", (e)=>{
             e.preventDefault();
 
-            var isOn = el.querySelector("a").classList.contains("on");
+            let isOn = el.querySelector("a").classList.contains("on");
             if(isOn) return;
     
             if(this.enableEvt){
                 this.enableEvt = false;                
-                PageScroll.prototype.moveScroll(index);
+                self.moveScroll(index);
             }   
         });
     })
 
     window.addEventListener("scroll", ()=>{
-        PageScroll.prototype.setPage()
+        self.setPage()
     });
 
     window.addEventListener(this.eventScroll, (e)=>{
         e.preventDefault();
 
-        var delta = 0;
+        let delta = 0;
         if(this.enableEvt){
             this.enableEvt = false;
     
@@ -71,25 +72,25 @@ PageScroll.prototype.bindingEvent = () => {
             }
 
             if (delta > 0) {
-                PageScroll.prototype.moveScroll(this.pageNext); // 아래로 돌림
+                self.moveScroll(this.pageNext); // 아래로 돌림
             } else {
-                PageScroll.prototype.moveScroll(this.pagePrev); // 위로 돌림
+                self.moveScroll(this.pagePrev); // 위로 돌림
             }
         } 
     }, {passive: false});
 }
 
 PageScroll.prototype.setPos = ()=>{
-    console.log("setPos");
+    //console.log("setPos");
     this.posArr = [];
     this.page.forEach((el)=>{
         this.posArr.push(el.offsetTop);
     });
-    console.log(`this.posArr : ${this.posArr}`);;
+    //console.log(`this.posArr : ${this.posArr}`);;
 }
 
 PageScroll.prototype.moveScroll = (index)=>{
-    console.log("moveScroll");
+    //console.log("moveScroll");
     this._scrollTop = this.posArr[index];
     this.startTime = performance.now();
     this.currentValue = Math.ceil(window.scrollY);
@@ -101,23 +102,23 @@ PageScroll.prototype.moveScroll = (index)=>{
 }
 
 PageScroll.prototype.action = (time)=> {
-    console.log(`time : ${time} / this.startTime : ${this.startTime}`);   
-    var timeLast = time - this.startTime;
+    //console.log(`time : ${time} / this.startTime : ${this.startTime}`);   
+    let timeLast = time - this.startTime;
     if(timeLast < 0) timeLast = timeLast - timeLast;
-    var progress = timeLast / this.speed;
+    let progress = timeLast / this.speed;
 
 	if(progress < 0) progress = 0;
     if(progress > 1) { if (isFrist) { progress = 1; isFrist = false } }
       
     if(progress <= 1) {           
         //console.log("action");
-        console.log(`${this.num++}`);
+        //console.log(`${this.num++}`);
         requestAnimationFrame((time)=>{PageScroll.prototype.action(time)});  
         this.result = this.currentValue + ((this._scrollTop-this.currentValue) * progress);
         window.scrollTo(0, this.result);
-        console.log(`timeLast : ${timeLast}`);   
-        console.log(`progress : ${progress}`);
-        console.log(`this.result : ${this.result}`);       
+        //console.log(`timeLast : ${timeLast}`);   
+        //console.log(`progress : ${progress}`);
+        //console.log(`this.result : ${this.result}`);       
     } else {
         //cancelAnimationFrame(this.timer);
         this.enableEvt = true;
@@ -126,9 +127,9 @@ PageScroll.prototype.action = (time)=> {
 
 PageScroll.prototype.setPage = ()=>{
     //console.log("setPage");
-    var _scrollTop = window.scrollY;
-    var minScroll = 0;
-    var maxScroll = 0;
+    let _scrollTop = window.scrollY;
+    let minScroll = 0;
+    let maxScroll = 0;
 
     this.page.forEach((el, index)=>{
 
@@ -142,104 +143,15 @@ PageScroll.prototype.setPage = ()=>{
 
             this.btns.forEach((el)=>{ el.querySelector("a").classList.remove("on"); });
             this.btns[index].querySelector("a").classList.add("on");
-
-            //console.log(`index : ${index}`);
-            //console.log(`pageNow : ${pageNow}`);
-            //console.log(`pagePrev : ${pagePrev}`);
-            //console.log(`pageNext : ${pageNext}`);
         }
     }); 
-}
-   
-
-///////////////////////////////////////////////
-/*
-
-var $page1_top = $('#page1').offset().top;
-var $page2_top = $('#page2').offset().top;
-var $page3_top = $('#page3').offset().top;
-var $page2_Ht =  $('#page2').height();
-var $page2_img = $(".page2__img");
-var onAnimation = true;
-
-var _scale = 2;
-var minScale = 1;
-var maxScale = 2;
-var baseS = 0.1;
-
-var yyy=0;
-var xxx=0;
-var tansY = -100;
-var minTansY = -$page2_Ht/2;
-var maxTansY = -100;
-var baseY = 50;
-
-var tansX = -200;
-var minTansX = 100;
-var maxTansX = -200;
-console.log($page2_top);
-console.log($page2_Ht);
-
-var eventScroll = ('onmousewheel' in window) ? 'mousewheel' : 'DOMMouseScroll';
-
-$(window).on(eventScroll, function(e) {
-    console.log("wheel!!!!!!!!!!!")
-    const pageY = $(window).scrollTop();    
-    console.log("pageY " + pageY);
-    console.log('eventScroll : ' + eventScroll);
-    onAnimation = false;
-   var delta = 0;
-    if (eventScroll === 'mousewheel') { 
-          console.log("e.wheelDelta : " +e.originalEvent.wheelDelta);
-          delta = e.originalEvent.wheelDelta / -150;
-    } else {
-          console.log("e.detail : " + e.originalEvent.detail);
-          //delta = e.detail / 3;
-   }
-   console.log("delta >> " + delta);
-    if (delta > 0) {
-         console.log("wheel down");  
-          //tansY -= baseY;
-          _scale >= minScale ? _scale -= baseS : _scale = minScale ;
-          tansX >= minTansX ? tansX -= baseY : tansX = minTansX ;
-          tansY >= minTansY ? tansY -= baseY : tansY = minTansY ;
-          console.log(tansY);   
-          yyy = yyy + 100;
-          xxx = xxx + 10;
-    } else {
-         console.log("wheel up");   
-          //tansY += baseY;
-          _scale <= maxScale ? _scale += baseS : _scale = maxScale;
-          tansX <= maxTansX ? tansX += baseY : tansX = maxTansX ;
-          tansY <= maxTansY ? tansY += baseY : tansY = maxTansY ;
-          console.log(tansY); 
-          yyy = yyy - 100;
-          xxx = xxx - 10;
-    }
-    
-    if(pageY > 300) {
-        $page2_img.animate({
-          bottom : `${yyy}px`
-        }, 0, function() {
-            onAnimation = true;
-        })
-    } else if(pageY > 500) {
-        $page2_img.animate({
-          
-          left : `${xxx}px`
-        }, 0, function() {
-            onAnimation = true;
-        })
-    }
-  
-})
-*/
+} 
 
 
 ///////////////////////////////////////////////
 
 const panel = document.querySelector("ul.imagePanel");
-const panel_list = panel.querySelectorAll("li");
+const panel_list = panel.querySelectorAll("li.imagePanel__item");
 const indicator = document.querySelector("ul.indicator");
 const btnPrev = document.querySelector(".btnPrev");
 const btnNext = document.querySelector(".btnNext");
@@ -271,6 +183,7 @@ function slideInit() {
   })
   indicator.innerHTML = indicator_tag;
   indicator_link = indicator.querySelectorAll("li");
+  console.log(indicator);
   indicator_link[slideFirst].classList.add("on");
 
   panel.style.width = `${100*panel_len}%`;
