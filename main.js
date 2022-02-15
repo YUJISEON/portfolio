@@ -1,6 +1,7 @@
 
 'use strict';
 
+
 function PageScroll(option) {    
     this.init(option);
     this.setPos();    
@@ -166,6 +167,13 @@ let slideGap;
 const speed = 800;
 let enableClick = true;
 
+const page3 = document.querySelector('section#page3')
+const page3_contents = document.querySelector('.page3__contents')
+const page4 = document.querySelector('section#page4')
+
+
+console.log(getComputedStyle(page3_contents)["height"]);
+
 document.addEventListener("DOMContentLoaded", ()=>{
     slideInit();
     indicatorStatus(slideFirst);
@@ -183,13 +191,22 @@ function slideInit() {
   })
   indicator.innerHTML = indicator_tag;
   indicator_link = indicator.querySelectorAll("li");
-  console.log(indicator);
+  //console.log(indicator);
   indicator_link[slideFirst].classList.add("on");
 
-  panel.style.width = `${100*panel_len}%`;
-  panel_list.forEach((list) => {
-    list.style.width = `${100/panel_len}%`;
-  })
+  if ( window.innerWidth > 1023 ) { 
+    panel.style.width = `${100*panel_len}%`;
+    panel_list.forEach((list) => {
+      list.style.width = `${100/panel_len}%`;
+    })
+  } else {           
+    page3.style.height = getComputedStyle(page3_contents)["height"];   
+      page4.style.height = getComputedStyle(panel)["height"];
+    panel.style.width = `${100}%`;
+    panel_list.forEach((list) => {
+      list.style.width = `${100}%`;
+    })
+  }
   panel.prepend(panel.lastElementChild);
 }
   
@@ -357,3 +374,49 @@ function indexControl(index) {
    }
    
  }
+
+ 
+const mpblieBtn = document.querySelector(".mpblieBtn");
+const navi = document.querySelector("#navi");
+let moblieCon = false;
+
+mpblieBtn.addEventListener("click", ()=>{
+  if (!moblieCon) {
+     navi.classList.add('on');
+     moblieCon = true;
+  } else {
+     navi.classList.remove('on');
+     moblieCon = false;
+  }
+});
+
+navi.addEventListener("click", ()=>{
+  navi.classList.remove('on');
+  moblieCon = false;
+});
+
+navi.addEventListener("click", ()=>{
+  navi.classList.remove('on');
+  moblieCon = false;
+});
+
+
+window.addEventListener("resize", ()=>{
+    if ( window.innerWidth > 1023 ) { 
+      navi.classList.remove('on');
+      panel.style.width = `${100*panel_len}%`;
+      panel_list.forEach((list) => {
+        list.style.width = `${100/panel_len}%`;
+      })
+      page3.style.height = "100vh";
+      page4.style.height = "100vh";
+      moblieCon = false;
+    } else {             
+      page3.style.height = getComputedStyle(page3_contents)["height"];   
+      page4.style.height = getComputedStyle(panel)["height"];
+      panel.style.width = `${100}%`;
+      panel_list.forEach((list) => {
+        list.style.width = `${100}%`;
+      })
+    }
+});
