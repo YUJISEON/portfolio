@@ -3,7 +3,6 @@
 
 /* section { width: 100%; height: 100vh} */
 
-
 .contents {width: 95vw; padding: 0 5vw; }
 section:last-child { height: auto }
 
@@ -23,13 +22,15 @@ nav #navi { display : none; position: absolute;  top: 50px; left: 0; margin: 0; 
 
 /**************************************/
 
-#page2 .page2__contents .page2__img img  { height: 55vh;  min-width: 50vw; }
+#page2 .page2__contents .page2__img img  {  left:59%; height: 55vh;  min-width: 50vw; }
 #page2 .page2__contents .page2__introduce .introduce__title > p { font-size: 5vw; transition: 1s; }
 #page2 .page2__contents .page2__introduce .introduce__desc > p { font-size: 2vw; transition: 1s; }
 
 
 /**************************************/
 
+.page3__content { margin-top: 50px; margin-bottom: 50px;}
+.page3__contents { height: auto;}
 .page3__contents .page3__content > p::before,
 .page3__contents .page3__content > p::after  { width: 25vw; max-width: 300px; }
 .page3__contents .page3__list { flex-wrap: wrap; }
@@ -37,7 +38,7 @@ nav #navi { display : none; position: absolute;  top: 50px; left: 0; margin: 0; 
 /**************************************/
 
 section#page4 { margin-bottom: 150px;}
-#page4 .page4__contents { height: 100%; top: 100px; transform: translate(-50%, 0%); }
+#page4 .page4__contents { width: 85vw; height: 100%; top: 100px; transform: translate(-50%, 0%); }
 .imgSildeWrap { height: auto;  overflow: visible;} 
 .imgSildeWrap > ul.imagePanel { position: static; width: 95vw; height: auto; flex-direction: column; }
 
@@ -63,9 +64,11 @@ div.control a { display: none; }
 @media screen and (max-width : 680px) {
 
     /* * { transition: .2s;} */
-
-    #page2 .page2__contents .page2__img img  { height: 35vh;  min-width: 20vw; }
+   
+    #page2 .page2__contents .page2__img img  { left:55%; height: 35vh;  min-width: 20vw; }
     #page2 .page2__contents .page2__introduce .introduce__desc > p { font-size: 2.5vw;  }
+
+    .imgSildeWrap > ul.imagePanel > li .panel__img img { width: 90vw;} 
 
     #page5 > article.page5__contents__top { height: 20vh;}
     #page5 > article.page5__contents__top p { margin-top: 15px; font-size: 6vw; }
@@ -78,6 +81,6 @@ div.control a { display: none; }
 
 @media screen and (max-width : 400px) {
 
-    /* .protfolioWrap ul.protfolioSlide > li .protfolioImg img { width: 95vw;} */
+    .imgSildeWrap > ul.imagePanel > li .panel__img img { width: 85vw;} 
 
 }

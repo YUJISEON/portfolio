@@ -167,6 +167,12 @@ let slideGap;
 const speed = 800;
 let enableClick = true;
 
+const page3 = document.querySelector('section#page3')
+const page3_contents = document.querySelector('.page3__contents')
+const page4 = document.querySelector('section#page4')
+
+
+console.log(getComputedStyle(page3_contents)["height"]);
 
 document.addEventListener("DOMContentLoaded", ()=>{
     slideInit();
@@ -194,6 +200,8 @@ function slideInit() {
       list.style.width = `${100/panel_len}%`;
     })
   } else {           
+    page3.style.height = getComputedStyle(page3_contents)["height"];   
+      page4.style.height = getComputedStyle(panel)["height"];
     panel.style.width = `${100}%`;
     panel_list.forEach((list) => {
       list.style.width = `${100}%`;
@@ -370,7 +378,6 @@ function indexControl(index) {
  
 const mpblieBtn = document.querySelector(".mpblieBtn");
 const navi = document.querySelector("#navi");
-const page4 = document.querySelector('section#page4')
 let moblieCon = false;
 
 mpblieBtn.addEventListener("click", ()=>{
@@ -401,9 +408,11 @@ window.addEventListener("resize", ()=>{
       panel_list.forEach((list) => {
         list.style.width = `${100/panel_len}%`;
       })
+      page3.style.height = "100vh";
       page4.style.height = "100vh";
       moblieCon = false;
-    } else {           
+    } else {             
+      page3.style.height = getComputedStyle(page3_contents)["height"];   
       page4.style.height = getComputedStyle(panel)["height"];
       panel.style.width = `${100}%`;
       panel_list.forEach((list) => {
